@@ -1,13 +1,11 @@
 from fastapi import FastAPI, File, UploadFile, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, HTMLResponse
-from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 import uuid
-import os
 from pathlib import Path
 
-BASE_DIR = Path(__file__).parent  # pasta raiz do projeto no container
+BASE_DIR = Path(__file__).parent
 
 from services.extractor import PdfExtractor
 from services.ocr_engine import OCRBaseEngine
@@ -30,32 +28,27 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Serve os arquivos estáticos
-static_dir = BASE_DIR / "static"
-if static_dir.is_dir():
-    app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
+# ─── Frontend: servido pela rota raiz ──────────────────────────────────────
+_HTML_CANDIDATES = [
+    BASE_DIR / "static" / "index.html",
+    BASE_DIR / "ocr_review.html",
+    BASE_DIR / "docs" / "index.html",
+]
 
-@app.get("/", include_in_schema=False)
+def _load_frontend() -> str:
+    for p in _HTML_CANDIDATES:
+        if p.exists():
+            return p.read_text(encoding="utf-8")
+    return "<h1>OTTO OCR</h1><p>Serviço operacional. Interface não encontrada.</p>"
+
+@app.api_route("/", methods=["GET", "HEAD"], include_in_schema=False)
 async def serve_frontend():
-    """Serve a interface de revisão OCR na rota raiz."""
-    for candidate in [
-        BASE_DIR / "static" / "index.html",
-        BASE_DIR / "ocr_review.html",
-        BASE_DIR / "docs" / "index.html",
-    ]:
-        if candidate.exists():
-            return HTMLResponse(candidate.read_text(encoding="utf-8"), status_code=200)
-    return HTMLResponse("<h1>OTTO OCR v2</h1><p>Interface carregando. Se persistir, contate o suporte.</p>", status_code=200)
+    return HTMLResponse(content=_load_frontend(), status_code=200)
 
-@app.get("/ping", include_in_schema=False)
+@app.api_route("/ping", methods=["GET", "HEAD"], include_in_schema=False)
 async def ping():
-    """Diagnóstico de versão do deploy."""
-    candidates = {
-        "static/index.html": (BASE_DIR / "static" / "index.html").exists(),
-        "ocr_review.html": (BASE_DIR / "ocr_review.html").exists(),
-        "docs/index.html": (BASE_DIR / "docs" / "index.html").exists(),
-    }
-    return {"version": "2.2.0", "base_dir": str(BASE_DIR), "files": candidates}
+    files = {str(p.relative_to(BASE_DIR)): p.exists() for p in _HTML_CANDIDATES}
+    return {"version": "2.3.0", "base_dir": str(BASE_DIR), "files": files}
 
 jobs = {}
 extractor = PdfExtractor()
