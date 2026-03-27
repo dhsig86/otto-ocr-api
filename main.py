@@ -38,13 +38,24 @@ if static_dir.is_dir():
 @app.get("/", include_in_schema=False)
 async def serve_frontend():
     """Serve a interface de revisão OCR na rota raiz."""
-    static_html = BASE_DIR / "static" / "index.html"
-    fallback_html = BASE_DIR / "ocr_review.html"
-    if static_html.exists():
-        return FileResponse(str(static_html), media_type="text/html")
-    if fallback_html.exists():
-        return FileResponse(str(fallback_html), media_type="text/html")
-    return HTMLResponse("<h1>OTTO OCR</h1><p>Interface não encontrada. Verifique o deploy.</p>", status_code=200)
+    for candidate in [
+        BASE_DIR / "static" / "index.html",
+        BASE_DIR / "ocr_review.html",
+        BASE_DIR / "docs" / "index.html",
+    ]:
+        if candidate.exists():
+            return HTMLResponse(candidate.read_text(encoding="utf-8"), status_code=200)
+    return HTMLResponse("<h1>OTTO OCR v2</h1><p>Interface carregando. Se persistir, contate o suporte.</p>", status_code=200)
+
+@app.get("/ping", include_in_schema=False)
+async def ping():
+    """Diagnóstico de versão do deploy."""
+    candidates = {
+        "static/index.html": (BASE_DIR / "static" / "index.html").exists(),
+        "ocr_review.html": (BASE_DIR / "ocr_review.html").exists(),
+        "docs/index.html": (BASE_DIR / "docs" / "index.html").exists(),
+    }
+    return {"version": "2.2.0", "base_dir": str(BASE_DIR), "files": candidates}
 
 jobs = {}
 extractor = PdfExtractor()
