@@ -28,5 +28,5 @@ COPY . /app/
 # A porta padrão que o provedor em nuvem procurará
 EXPOSE 8000
 
-# Script de boot da aplicação
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Script de boot da aplicação lidando com porta dinâmica do Heroku
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"]
