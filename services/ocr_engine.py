@@ -1,18 +1,28 @@
 import io
 import pytesseract
-from PIL import Image, ImageEnhance
+from PIL import Image, ImageEnhance, ImageFilter
 from pdf2image import convert_from_bytes
+
+MIN_TEXT_CHARS = 80  # Mínimo de caracteres para considerar OCR válido
 
 class OCRBaseEngine:
     def preprocess_image(self, image: Image.Image) -> Image.Image:
         """
-        Aplica escala de cinza, aumento de contraste e binarização simples
-        para melhorar a precisão do OCR em laudos.
+        Pré-processa imagens para melhorar a taxa de acerto do OCR em fotos de celular:
+        - Converte para escala de cinza
+        - Aplica nitidez (Sharpness) para compensar foco suave
+        - Aumenta o contraste
+        - Binariza com threshold adaptativo
         """
         img = image.convert('L')
+        # Nitidez: melhora bordas de letras fotografadas
+        img = img.filter(ImageFilter.SHARPEN)
+        img = img.filter(ImageFilter.SHARPEN)
+        # Contraste
         enhancer = ImageEnhance.Contrast(img)
-        img = enhancer.enhance(2.0)
-        img = img.point(lambda p: 255 if p > 128 else 0)
+        img = enhancer.enhance(2.5)
+        # Binarização
+        img = img.point(lambda p: 255 if p > 140 else 0)
         return img
 
     def extract_from_image_bytes(self, image_bytes: bytes) -> str:
@@ -21,8 +31,15 @@ class OCRBaseEngine:
         """
         image = Image.open(io.BytesIO(image_bytes))
         image = self.preprocess_image(image)
-        # lang='por' requer o pacote tesseract-ocr-por instalado
         text = pytesseract.image_to_string(image, lang='por')
+        if len(text.strip()) < MIN_TEXT_CHARS:
+            # Tenta sem binarização (pode ajudar em fotos com fundo muito escuro)
+            image_raw = Image.open(io.BytesIO(image_bytes)).convert('L')
+            enhancer = ImageEnhance.Contrast(image_raw)
+            image_raw = enhancer.enhance(1.5)
+            text_alt = pytesseract.image_to_string(image_raw, lang='por')
+            if len(text_alt.strip()) > len(text.strip()):
+                text = text_alt
         return text
 
     def extract_from_pdf_bytes(self, pdf_bytes: bytes) -> str:

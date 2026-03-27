@@ -58,6 +58,27 @@ async def process_job(job_id: str, file_bytes: bytes, filename: str):
         patient_token = generate_patient_token(header_raw)
         safe_body = strip_pii_from_text(safe_body)
 
+        # — Guarda de Confiança: bloqueia GPT se texto extraído for insuficiente —
+        MIN_CHARS = 80
+        if len(safe_body.strip()) < MIN_CHARS:
+            jobs[job_id]["status"] = "low_confidence"
+            jobs[job_id]["message"] = (
+                f"OCR extraiu apenas {len(safe_body.strip())} caracteres — insuficiente para análise segura. "
+                "Por favor, envie o laudo em melhor qualidade (PDF nativo, scan de alta resolução ou foto com boa iluminação)."
+            )
+            jobs[job_id]["result"] = {
+                "patient_token": patient_token,
+                "exam_type": "indefinido",
+                "exam_label": "Não Identificado — Qualidade Insuficiente",
+                "was_raster_engine_used": is_raster,
+                "raw_text_length": len(text),
+                "safe_text_snippet": safe_body[:300],
+                "entities_found": {},
+                "clinical_interpretation": None,
+                "low_confidence": True
+            }
+            return
+
         # — Etapa 3: Classificação do Tipo de Exame (ANTES de NLP e GPT) —
         jobs[job_id]["message"] = "Identificando tipo de exame..."
         exam_type = classifier.classify(safe_body)

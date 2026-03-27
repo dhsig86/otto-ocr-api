@@ -445,6 +445,11 @@
           clearInterval(interval);
           document.getElementById('status-bar').style.display = 'none';
           renderResult(data.result);
+        } else if (data.status === 'low_confidence') {
+          clearInterval(interval);
+          document.getElementById('status-bar').style.display = 'none';
+          document.getElementById('status-text').textContent = '';
+          renderLowConfidence(data);
         } else if (data.status === 'failed') {
           clearInterval(interval);
           setStatus(`❌ Falha: ${data.message}`);
@@ -455,6 +460,28 @@
       }
       if (attempts > 30) { clearInterval(interval); setStatus('⚠️ Timeout. Tente novamente.'); }
     }, 3000);
+  }
+
+  function renderLowConfidence(data) {
+    const card = document.getElementById('result-card');
+    card.style.display = 'block';
+    document.getElementById('r-exam-badge').textContent = '⚠️ Qualidade Insuficiente';
+    document.getElementById('r-exam-badge').style.background = 'rgba(245,158,11,0.1)';
+    document.getElementById('r-exam-badge').style.borderColor = '#f59e0b';
+    document.getElementById('r-exam-badge').style.color = '#f59e0b';
+    document.getElementById('r-token').textContent = data.result?.patient_token ? `🎫 ${data.result.patient_token}` : '—';
+    document.getElementById('r-engine').textContent = '📡 Tesseract OCR';
+    document.getElementById('r-summary').innerHTML = `
+      <span style="color: var(--yellow);">⚠️ O OCR não conseguiu extrair texto suficiente desta imagem.</span><br><br>
+      ${data.message}<br><br>
+      <strong>Dicas para melhorar:</strong><br>
+      • Prefira enviar o <strong>PDF original</strong> do laudo<br>
+      • Se for foto, garanta <strong>boa iluminação</strong> e foto centralizada<br>
+      • Evite sombras e reflexos no papel<br>
+      • Resolução mínima recomendada: <strong>1920×1080 px</strong>`;
+    document.getElementById('r-findings').innerHTML = '';
+    document.getElementById('r-diag').innerHTML = '';
+    document.getElementById('r-text').textContent = data.result?.safe_text_snippet || '(sem texto extraído)';
   }
 
   function renderResult(r) {

@@ -1,0 +1,60 @@
+{
+  "laudo_1_pasteur": {
+    "tipo_esperado": "tomografia",
+    "resultado": {
+      "patient_token": "pt-1a6d01a1d098",
+      "exam_type": "tomografia",
+      "exam_label": "Tomografia Computadorizada",
+      "was_raster_engine_used": true,
+      "raw_text_length": 1453,
+      "safe_text_snippet": "TOMOGRAFIACOMPUTADORIZADA DOS SEIOS DA FACE\n\nTaenios\n\nForam obtidas imagenssem contraste.\n\nAral\nExame anterior de 1010712023.\n\nOxteccintese motlica na parede anterior doseio milar esquerdo ebordoorbiia inalterada\n\nEder iregulridados nos css rasa notadamente noesquerdo.\n\n“Temblm s oservam Irregularid...",
+      "entities_found": {},
+      "clinical_interpretation": {
+        "summary": "O exame de tomografia dos seios da face revela irregularidades na parede anterior do seio maxilar esquerdo, espessamento mucoso nas cavidades frontais e certas células etmoidais anteriores. As irregularidades no septo nasal e a proximidade do nariz indicam possível insuficiência cartilaginosa e siniquias. O exame sugere sequelas de trauma e desvio do septo nasal.",
+        "findings": [
+          "Irregularidades na parede anterior do seio maxilar esquerdo.",
+          "Espessamento mucoso nas cavidades frontais.",
+          "Irregularidades na porção anterior superior do seio nasal.",
+          "Desvio do septo nasal para a direita comprimindo o corneto inferior.",
+          "Presença de sinaiis sugestivos de sequelas de fratura na região nasal e septo."
+        ],
+        "diagnostics": [
+          "Considerar cirurgia para correction do desvio do septo nasal e potencial ressecção de siniquias.",
+          "Avaliar necessidade de desbridamento ou exérese de lesões expansivas.",
+          "Monitorar a possibilidade de insuficiência das válvulas nasais devido a alterações cartilaginosas.",
+          "Analisar a indicação de cirurgia funcional caso a obstrução nasal persista.",
+          "Investigar a relação dos achados com possíveis sequelas de trauma facial."
+        ]
+      }
+    }
+  },
+  "laudo_2_proecho": {
+    "tipo_esperado": "tomografia",
+    "resultado": {
+      "patient_token": "pt-d6a358509ed3",
+      "exam_type": "tomografia",
+      "exam_label": "Tomografia Computadorizada",
+      "was_raster_engine_used": true,
+      "raw_text_length": 842,
+      "safe_text_snippet": "TOMOGRAFIACOMPUTADORIZADA DA FACE\n\nASPECTOS TECNICOS:\n\nAqui helcoidal music, com reconstrumes multiplanares semo meiode contraste venoso\n\nASPECTOSOBSERVADOS\nEspossamento mucoso dose oesfenidal  dosse os maxilares principalmente dassuasregiesinfriores\nVelamentodo quaso todasasclulasetmoidais devido e...",
+      "entities_found": {},
+      "clinical_interpretation": {
+        "summary": "A tomografia computadorizada da face revela espessamento mucoso significativo das fossas nasais, especialmente nas regiões inferiores dos seios maxilares e velamento das células etmoidais, indicando possível sinusite. As vias de drenagem estão obstruídas, sugerindo complicações relacionadas à drenagem dos seios paranasais.",
+        "findings": [
+          "Espessamento mucoso dos seios maxilares e esfenoidal",
+          "Velamento das células etmoidais",
+          "Obliteramento das vias de drenagem dos seios paranasais",
+          "Seios frontais normotransparentes",
+          "Meato nasal superior obstruído por espessamento mucoso"
+        ],
+        "diagnostics": [
+          "Sinusite crônica",
+          "Possível necessidade de sinusotomia para desobstrução",
+          "Avaliação da função de drenagem das cavidades paranasais",
+          "Considerar rinossinusite alérgica",
+          "Não há lesões expansivas identificadas"
+        ]
+      }
+    }
+  }
+}
