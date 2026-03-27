@@ -1,6 +1,7 @@
-from fastapi import FastAPI, File, UploadFile, BackgroundTasks
+from fastapi import FastAPI, File, UploadFile, BackgroundTasks, Header, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, FileResponse
+import os
 from pydantic import BaseModel
 import uuid
 from pathlib import Path
@@ -173,6 +174,24 @@ async def validate_ocr_result(job_id: str, payload: ValidationResult):
 async def get_stats():
     """Estatísticas de validações para monitoramento do enriquecimento lexical."""
     return get_lexical_stats()
+
+@app.get("/ocr/db/export")
+async def export_database(x_admin_token: str = Header(default=None)):
+    """
+    Exporta o banco SQLite para download local antes de novos deploys.
+    Protegido por token simples (header X-Admin-Token).
+    """
+    admin_token = os.environ.get("ADMIN_TOKEN", "otto-ocr-admin")
+    if x_admin_token != admin_token:
+        raise HTTPException(status_code=401, detail="Token inválido")
+    from core.database import DB_PATH
+    if not DB_PATH.exists():
+        raise HTTPException(status_code=404, detail="Banco de dados ainda não criado")
+    return FileResponse(
+        path=str(DB_PATH),
+        media_type="application/octet-stream",
+        filename="otto_ocr_backup.db"
+    )
 
 @app.get("/health")
 async def health_check():
