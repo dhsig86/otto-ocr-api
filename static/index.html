@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OTTO OCR — Revisão de Laudos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface2: #21262d;
+      --border: #30363d;
+      --accent: #3b82f6;
+      --accent-glow: rgba(59,130,246,0.15);
+      --green: #22c55e;
+      --red: #ef4444;
+      --yellow: #f59e0b;
+      --text: #e6edf3;
+      --muted: #8b949e;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    header .logo {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--accent);
+      letter-spacing: -0.5px;
+    }
+    header .badge {
+      background: var(--accent-glow);
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+    header .lgpd {
+      margin-left: auto;
+      font-size: 0.75rem;
+      color: var(--green);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    main {
+      max-width: 960px;
+      margin: 2.5rem auto;
+      padding: 0 1.5rem;
+    }
+
+    .section-title {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+    }
+
+    /* Upload Zone */
+    .upload-zone {
+      background: var(--surface);
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      padding: 2.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+    .upload-zone:hover, .upload-zone.drag { border-color: var(--accent); background: var(--accent-glow); }
+    .upload-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .upload-zone .icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .upload-zone p { color: var(--muted); font-size: 0.9rem; }
+    .upload-zone p strong { color: var(--text); }
+    .upload-zone .formats { font-size: 0.72rem; margin-top: 0.35rem; color: var(--muted); }
+
+    /* Exam type selector */
+    .exam-selector {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+    .exam-btn {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .exam-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .exam-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+    /* Status bar */
+    #status-bar {
+      display: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    #status-bar .spinner {
+      width: 18px; height: 18px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #status-text { font-size: 0.85rem; color: var(--muted); }
+
+    /* Result card */
+    #result-card {
+      display: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.4s ease;
+    }
+    @keyframes fadeUp { from { opacity:0; transform: translateY(12px); } to { opacity:1; transform: translateY(0); } }
+
+    .result-header {
+      background: var(--surface2);
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .result-header .exam-badge {
+      background: var(--accent-glow);
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      font-size: 0.72rem;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+    .result-header .token {
+      font-size: 0.72rem;
+      color: var(--green);
+      font-family: monospace;
+      background: rgba(34,197,94,0.08);
+      padding: 3px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(34,197,94,0.3);
+    }
+    .result-header .engine-badge {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-left: auto;
+    }
+
+    .result-body { padding: 1.5rem; }
+
+    .result-section { margin-bottom: 1.5rem; }
+    .result-section h3 {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .result-section p.summary-text {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      color: var(--text);
+    }
+
+    .findings-list, .diag-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .findings-list li {
+      display: flex; align-items: flex-start; gap: 0.5rem;
+      font-size: 0.87rem; color: var(--text); line-height: 1.5;
+    }
+    .findings-list li::before { content: "●"; color: var(--yellow); font-size: 0.6rem; margin-top: 5px; flex-shrink: 0; }
+    .diag-list li {
+      display: flex; align-items: flex-start; gap: 0.5rem;
+      font-size: 0.87rem; color: var(--text); line-height: 1.5;
+    }
+    .diag-list li::before { content: "→"; color: var(--accent); flex-shrink: 0; }
+
+    .text-snippet {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.9rem;
+      font-size: 0.78rem;
+      font-family: monospace;
+      color: var(--muted);
+      white-space: pre-wrap;
+      max-height: 160px;
+      overflow-y: auto;
+      line-height: 1.6;
+    }
+
+    /* Validation section */
+    .validation-section {
+      background: var(--surface2);
+      border-top: 1px solid var(--border);
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .validation-section p { font-size: 0.82rem; color: var(--muted); margin-right: 0.5rem; }
+    .btn {
+      padding: 0.5rem 1.1rem;
+      border-radius: 8px;
+      font-size: 0.83rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    .btn-confirm { background: var(--green); color: #fff; }
+    .btn-confirm:hover { opacity: 0.85; }
+    .btn-correct { background: var(--surface); border: 1px solid var(--border); color: var(--text); }
+    .btn-correct:hover { border-color: var(--accent); }
+
+    .correction-form {
+      display: none;
+      width: 100%;
+      margin-top: 0.75rem;
+    }
+    .correction-form textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      padding: 0.75rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.83rem;
+      resize: vertical;
+      min-height: 80px;
+      outline: none;
+    }
+    .correction-form textarea:focus { border-color: var(--accent); }
+    .correction-form .btn-submit {
+      background: var(--accent);
+      color: #fff;
+      padding: 0.45rem 1rem;
+      border-radius: 6px;
+      border: none;
+      font-size: 0.8rem;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+
+    .validated-badge {
+      display: none;
+      background: rgba(34,197,94,0.1);
+      color: var(--green);
+      border: 1px solid rgba(34,197,94,0.3);
+      padding: 0.4rem 1rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 500;
+    }
+
+    /* Alert */
+    .lgpd-alert {
+      background: rgba(34,197,94,0.06);
+      border: 1px solid rgba(34,197,94,0.2);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      display: flex;
+      gap: 0.5rem;
+    }
+    .lgpd-alert span { color: var(--green); font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<header>
+  <span class="logo">OTTO OCR</span>
+  <span class="badge">v2.0</span>
+  <span class="lgpd">🔒 Dados protegidos — LGPD</span>
+</header>
+
+<main>
+  <div class="lgpd-alert">
+    <span>🛡️ LGPD</span>
+    Dados de identificação do paciente são removidos automaticamente antes de qualquer análise por IA. O <strong>patient_token</strong> gerado preserva a rastreabilidade sem expor dados pessoais.
+  </div>
+
+  <p class="section-title">Tipo de Exame (opcional)</p>
+  <div class="exam-selector" id="exam-selector">
+    <button class="exam-btn active" data-type="auto">🔍 Detectar automaticamente</button>
+    <button class="exam-btn" data-type="audiometria">🎵 Audiometria</button>
+    <button class="exam-btn" data-type="bera">⚡ BERA</button>
+    <button class="exam-btn" data-type="videolaringoscopia">🎙️ Videolaringoscopia</button>
+    <button class="exam-btn" data-type="endoscopia_nasal">👃 Endoscopia Nasal</button>
+    <button class="exam-btn" data-type="tomografia">🔬 Tomografia</button>
+  </div>
+
+  <p class="section-title">Enviar Laudo</p>
+  <div class="upload-zone" id="upload-zone">
+    <input type="file" id="file-input" accept=".pdf,.jpg,.jpeg,.png" />
+    <div class="icon">📄</div>
+    <p><strong>Clique ou arraste o laudo aqui</strong></p>
+    <p>PDF, JPG ou PNG</p>
+    <p class="formats">Suporte a laudos digitalizados, prints de PDF e fotos de formulários</p>
+  </div>
+
+  <div id="status-bar">
+    <div class="spinner"></div>
+    <span id="status-text">Enviando arquivo...</span>
+  </div>
+
+  <div id="result-card">
+    <div class="result-header">
+      <span id="r-exam-badge" class="exam-badge">—</span>
+      <span id="r-token" class="token">—</span>
+      <span id="r-engine" class="engine-badge">—</span>
+    </div>
+    <div class="result-body">
+      <div class="result-section">
+        <h3>📋 Sumário Clínico</h3>
+        <p id="r-summary" class="summary-text">—</p>
+      </div>
+      <div class="result-section">
+        <h3>🔍 Achados Relevantes</h3>
+        <ul id="r-findings" class="findings-list"></ul>
+      </div>
+      <div class="result-section">
+        <h3>💊 Diagnósticos / Condutas Sugeridas</h3>
+        <ul id="r-diag" class="diag-list"></ul>
+      </div>
+      <div class="result-section">
+        <h3>📄 Texto Extraído (Após Filtro LGPD)</h3>
+        <div id="r-text" class="text-snippet"></div>
+      </div>
+    </div>
+    <div class="validation-section">
+      <p>Revisão médica:</p>
+      <button class="btn btn-confirm" id="btn-confirm">✅ Dados Corretos</button>
+      <button class="btn btn-correct" id="btn-correct">✏️ Corrigir Extração</button>
+      <span class="validated-badge" id="validated-badge">✅ Validado e salvo</span>
+      <div class="correction-form" id="correction-form">
+        <textarea id="correction-text" placeholder="Descreva o erro de extração. Ex: O OCR leu '60 dB' mas o correto é '40 dB na frequência de 4kHz orelha direita'..."></textarea>
+        <button class="btn-submit" id="btn-submit">Enviar Correção</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+  const API = '';  // mesmo domínio — ocr.drdariohart.com
+  let currentJobId = null;
+
+  // Exam type selector
+  document.querySelectorAll('.exam-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.exam-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // Upload
+  const fileInput = document.getElementById('file-input');
+  const uploadZone = document.getElementById('upload-zone');
+
+  uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag'); });
+  uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag'));
+  uploadZone.addEventListener('drop', e => {
+    e.preventDefault();
+    uploadZone.classList.remove('drag');
+    if (e.dataTransfer.files[0]) processFile(e.dataTransfer.files[0]);
+  });
+  fileInput.addEventListener('change', () => { if (fileInput.files[0]) processFile(fileInput.files[0]); });
+
+  function setStatus(msg) {
+    document.getElementById('status-bar').style.display = 'flex';
+    document.getElementById('status-text').textContent = msg;
+  }
+
+  async function processFile(file) {
+    document.getElementById('result-card').style.display = 'none';
+    document.getElementById('validated-badge').style.display = 'none';
+    document.getElementById('correction-form').style.display = 'none';
+    setStatus(`Enviando "${file.name}" para análise...`);
+
+    const form = new FormData();
+    form.append('file', file);
+
+    try {
+      const res = await fetch(`${API}/ocr/upload`, { method: 'POST', body: form });
+      const data = await res.json();
+      if (!res.ok || !data.job_id) throw new Error(data.detail || 'Erro no upload');
+      currentJobId = data.job_id;
+      pollResult(currentJobId);
+    } catch (e) {
+      setStatus(`❌ Erro: ${e.message}`);
+    }
+  }
+
+  async function pollResult(jobId) {
+    let attempts = 0;
+    const interval = setInterval(async () => {
+      attempts++;
+      try {
+        const res = await fetch(`${API}/ocr/${jobId}/result`);
+        const data = await res.json();
+        document.getElementById('status-text').textContent = data.message || `Aguardando... (${attempts * 3}s)`;
+
+        if (data.status === 'completed') {
+          clearInterval(interval);
+          document.getElementById('status-bar').style.display = 'none';
+          renderResult(data.result);
+        } else if (data.status === 'low_confidence') {
+          clearInterval(interval);
+          document.getElementById('status-bar').style.display = 'none';
+          document.getElementById('status-text').textContent = '';
+          renderLowConfidence(data);
+        } else if (data.status === 'failed') {
+          clearInterval(interval);
+          setStatus(`❌ Falha: ${data.message}`);
+        }
+      } catch (e) {
+        clearInterval(interval);
+        setStatus(`❌ Erro ao consultar: ${e.message}`);
+      }
+      if (attempts > 30) { clearInterval(interval); setStatus('⚠️ Timeout. Tente novamente.'); }
+    }, 3000);
+  }
+
+  function renderLowConfidence(data) {
+    const card = document.getElementById('result-card');
+    card.style.display = 'block';
+    document.getElementById('r-exam-badge').textContent = '⚠️ Qualidade Insuficiente';
+    document.getElementById('r-exam-badge').style.background = 'rgba(245,158,11,0.1)';
+    document.getElementById('r-exam-badge').style.borderColor = '#f59e0b';
+    document.getElementById('r-exam-badge').style.color = '#f59e0b';
+    document.getElementById('r-token').textContent = data.result?.patient_token ? `🎫 ${data.result.patient_token}` : '—';
+    document.getElementById('r-engine').textContent = '📡 Tesseract OCR';
+    document.getElementById('r-summary').innerHTML = `
+      <span style="color: var(--yellow);">⚠️ O OCR não conseguiu extrair texto suficiente desta imagem.</span><br><br>
+      ${data.message}<br><br>
+      <strong>Dicas para melhorar:</strong><br>
+      • Prefira enviar o <strong>PDF original</strong> do laudo<br>
+      • Se for foto, garanta <strong>boa iluminação</strong> e foto centralizada<br>
+      • Evite sombras e reflexos no papel<br>
+      • Resolução mínima recomendada: <strong>1920×1080 px</strong>`;
+    document.getElementById('r-findings').innerHTML = '';
+    document.getElementById('r-diag').innerHTML = '';
+    document.getElementById('r-text').textContent = data.result?.safe_text_snippet || '(sem texto extraído)';
+  }
+
+  function renderResult(r) {
+    const ci = r.clinical_interpretation || {};
+    document.getElementById('r-exam-badge').textContent = r.exam_label || 'Exame';
+    document.getElementById('r-token').textContent = `🎫 ${r.patient_token || '—'}`;
+    document.getElementById('r-engine').textContent = r.was_raster_engine_used ? '📡 Tesseract OCR' : '📄 PDF Nativo';
+    document.getElementById('r-summary').textContent = ci.summary || '—';
+
+    const findingsEl = document.getElementById('r-findings');
+    findingsEl.innerHTML = '';
+    (ci.findings || []).forEach(f => {
+      const li = document.createElement('li');
+      li.textContent = f;
+      findingsEl.appendChild(li);
+    });
+
+    const diagEl = document.getElementById('r-diag');
+    diagEl.innerHTML = '';
+    (ci.diagnostics || []).forEach(d => {
+      const li = document.createElement('li');
+      li.textContent = d;
+      diagEl.appendChild(li);
+    });
+
+    document.getElementById('r-text').textContent = r.safe_text_snippet || '(sem texto extraído)';
+    document.getElementById('result-card').style.display = 'block';
+  }
+
+  // Validation
+  document.getElementById('btn-confirm').addEventListener('click', async () => {
+    if (!currentJobId) return;
+    await fetch(`${API}/ocr/${currentJobId}/validate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ is_correct: true, corrections: null })
+    });
+    document.getElementById('validated-badge').style.display = 'inline-flex';
+    document.getElementById('correction-form').style.display = 'none';
+  });
+
+  document.getElementById('btn-correct').addEventListener('click', () => {
+    const form = document.getElementById('correction-form');
+    form.style.display = form.style.display === 'block' ? 'none' : 'block';
+  });
+
+  document.getElementById('btn-submit').addEventListener('click', async () => {
+    const correction = document.getElementById('correction-text').value.trim();
+    if (!correction || !currentJobId) return;
+    await fetch(`${API}/ocr/${currentJobId}/validate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ is_correct: false, corrections: correction })
+    });
+    document.getElementById('validated-badge').textContent = '✏️ Correção enviada. Obrigado!';
+    document.getElementById('validated-badge').style.display = 'inline-flex';
+    document.getElementById('correction-form').style.display = 'none';
+  });
+</script>
+</body>
+</html>

@@ -1,7 +1,10 @@
 from fastapi import FastAPI, File, UploadFile, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 import uuid
+import os
 
 from services.extractor import PdfExtractor
 from services.ocr_engine import OCRBaseEngine
@@ -23,6 +26,18 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Serve os arquivos estáticos (CSS/JS futuros)
+if os.path.isdir("static"):
+    app.mount("/static", StaticFiles(directory="static"), name="static")
+
+@app.get("/", include_in_schema=False)
+async def serve_frontend():
+    """Serve a interface de revisão OCR na rota raiz."""
+    html_path = "static/index.html"
+    if os.path.exists(html_path):
+        return FileResponse(html_path, media_type="text/html")
+    return FileResponse("ocr_review.html", media_type="text/html")
 
 jobs = {}
 extractor = PdfExtractor()
