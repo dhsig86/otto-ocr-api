@@ -1,10 +1,13 @@
 from fastapi import FastAPI, File, UploadFile, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 import uuid
 import os
+from pathlib import Path
+
+BASE_DIR = Path(__file__).parent  # pasta raiz do projeto no container
 
 from services.extractor import PdfExtractor
 from services.ocr_engine import OCRBaseEngine
@@ -27,17 +30,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Serve os arquivos estáticos (CSS/JS futuros)
-if os.path.isdir("static"):
-    app.mount("/static", StaticFiles(directory="static"), name="static")
+# Serve os arquivos estáticos
+static_dir = BASE_DIR / "static"
+if static_dir.is_dir():
+    app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
 
 @app.get("/", include_in_schema=False)
 async def serve_frontend():
     """Serve a interface de revisão OCR na rota raiz."""
-    html_path = "static/index.html"
-    if os.path.exists(html_path):
-        return FileResponse(html_path, media_type="text/html")
-    return FileResponse("ocr_review.html", media_type="text/html")
+    static_html = BASE_DIR / "static" / "index.html"
+    fallback_html = BASE_DIR / "ocr_review.html"
+    if static_html.exists():
+        return FileResponse(str(static_html), media_type="text/html")
+    if fallback_html.exists():
+        return FileResponse(str(fallback_html), media_type="text/html")
+    return HTMLResponse("<h1>OTTO OCR</h1><p>Interface não encontrada. Verifique o deploy.</p>", status_code=200)
 
 jobs = {}
 extractor = PdfExtractor()
