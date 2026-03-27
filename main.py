@@ -2,25 +2,23 @@ from fastapi import FastAPI, File, UploadFile, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import uuid
-import io
-import asyncio
 
 from services.extractor import PdfExtractor
 from services.ocr_engine import OCRBaseEngine
 from services.nlp_parser import NLPParser
 from services.gpt_bridge import GPTSummarizer
-from core.security import strip_pii_from_text
+from services.exam_classifier import ExamClassifier
+from core.security import strip_pii_from_text, extract_and_strip_header, generate_patient_token
 
 app = FastAPI(
     title="OTTO OCR Service",
-    description="Microserviço opcional para extração e interpretação de exames OTTO (Regra 9).",
-    version="1.0.0"
+    description="Microserviço opcional de extração e interpretação de exames OTTO (Regra 9).",
+    version="2.0.0"
 )
 
-# Configurando CORS para permitir requisições do seu Frontend em Vite/React
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # Trocar pelo domínio do OTTO Triagem/PROCOD em produção
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -31,6 +29,7 @@ extractor = PdfExtractor()
 ocr_engine = OCRBaseEngine()
 nlp_parser = NLPParser()
 gpt_bridge = GPTSummarizer()
+classifier = ExamClassifier()
 
 class ValidationResult(BaseModel):
     is_correct: bool
@@ -39,10 +38,10 @@ class ValidationResult(BaseModel):
 async def process_job(job_id: str, file_bytes: bytes, filename: str):
     try:
         jobs[job_id]["status"] = "processing"
-        
         text = ""
         is_raster = False
-        
+
+        # — Etapa 1: Extração de Texto —
         if filename.lower().endswith(".pdf"):
             text, is_raster = extractor.process(file_bytes, filename)
             if is_raster:
@@ -52,62 +51,70 @@ async def process_job(job_id: str, file_bytes: bytes, filename: str):
             is_raster = True
             jobs[job_id]["message"] = "Imagem detectada. Iniciando motor OCR..."
             text = ocr_engine.extract_from_image_bytes(file_bytes)
-            
-        jobs[job_id]["message"] = "Aplicando camada de anonimização (LGPD)..."
-        safe_text = strip_pii_from_text(text)
-        
-        jobs[job_id]["message"] = "Analisando com NLP/Regex estruturado..."
-        exam_type = filename.split(".")[0].lower()
-        extracted_entities = nlp_parser.enrich_with_heuristics(safe_text, exam_type)
-        
-        jobs[job_id]["message"] = "Enviando texto seguro para resumo no GPT..."
-        gpt_analysis = await gpt_bridge.summarize(safe_text, exam_type)
-        
+
+        # — Etapa 2: LGPD — Extrai cabeçalho (PII) e gera token anônimo auditável —
+        jobs[job_id]["message"] = "Aplicando protocolo LGPD: extraindo cabeçalho e gerando token anônimo..."
+        safe_body, header_raw = extract_and_strip_header(text)
+        patient_token = generate_patient_token(header_raw)
+        safe_body = strip_pii_from_text(safe_body)
+
+        # — Etapa 3: Classificação do Tipo de Exame (ANTES de NLP e GPT) —
+        jobs[job_id]["message"] = "Identificando tipo de exame..."
+        exam_type = classifier.classify(safe_body)
+        exam_label = classifier.label(exam_type)
+        jobs[job_id]["exam_type"] = exam_type
+        jobs[job_id]["message"] = f"Exame identificado: {exam_label}"
+
+        # — Etapa 4: NLP Rule-Based específico por tipo —
+        entities = nlp_parser.enrich_with_heuristics(safe_body, exam_type)
+
+        # — Etapa 5: Interpretação GPT com prompt especializado —
+        jobs[job_id]["message"] = f"Enviando para análise clínica GPT ({exam_label})..."
+        gpt_analysis = await gpt_bridge.summarize(safe_body, exam_type)
+
         jobs[job_id]["status"] = "completed"
+        jobs[job_id]["message"] = "Processamento finalizado."
         jobs[job_id]["result"] = {
+            "patient_token": patient_token,    # ID anônimo para integrar ao OTTO Triagem
+            "exam_type": exam_type,
+            "exam_label": exam_label,
             "was_raster_engine_used": is_raster,
             "raw_text_length": len(text),
-            "safe_text_snippet": safe_text[:200] + "...", 
-            "entities_found": extracted_entities,
+            "safe_text_snippet": safe_body[:300] + "...",
+            "entities_found": entities,
             "clinical_interpretation": gpt_analysis
         }
-        jobs[job_id]["message"] = "Processamento finalizado e interpretado sem quebrar output."
-        
+
     except Exception as e:
         jobs[job_id]["status"] = "failed"
-        jobs[job_id]["message"] = f"Erro assíncrono no processamento: {str(e)}"
+        jobs[job_id]["message"] = f"Erro no processamento: {str(e)}"
 
 @app.post("/ocr/upload")
 async def upload_document(background_tasks: BackgroundTasks, file: UploadFile = File(...)):
-    """Recebe arquivo (PDF ou imagem) e aciona processamento assíncrono."""
+    """Inicia extração assíncrona de laudo médico (PDF ou imagem)."""
     job_id = str(uuid.uuid4())
     file_bytes = await file.read()
-    
+
     jobs[job_id] = {
         "status": "queued",
         "result": None,
         "filename": file.filename,
-        "message": "Protocolo gerado. O exame iniciou o processamento na nuvem."
+        "message": "Protocolo gerado. Processamento iniciado."
     }
-    
-    background_tasks.add_task(process_job, job_id, file_bytes, file.filename)
 
-    return {
-        "job_id": job_id,
-        "status": "queued",
-        "message": "Protocolo gerado. O exame entrou na fila."
-    }
+    background_tasks.add_task(process_job, job_id, file_bytes, file.filename)
+    return {"job_id": job_id, "status": "queued"}
 
 @app.get("/ocr/{job_id}/result")
 async def get_ocr_result(job_id: str):
-    """Poller do frontend para buscar quando a análise finaliza."""
+    """Consulta resultado do processamento."""
     if job_id not in jobs:
-        return {"error": "Not Found", "message": "Job inválido."}
+        return {"error": "Not Found"}
     return jobs[job_id]
 
 @app.post("/ocr/{job_id}/validate")
 async def validate_ocr_result(job_id: str, payload: ValidationResult):
-    """Rota de feedback médico."""
+    """Feedback médico para retroalimentação e auditoria."""
     if job_id not in jobs:
         return {"error": "Not Found"}
     jobs[job_id]["validation_status"] = "validated"
@@ -116,4 +123,4 @@ async def validate_ocr_result(job_id: str, payload: ValidationResult):
 
 @app.get("/health")
 async def health_check():
-    return {"status": "ok", "service": "OTTO OCR microservice"}
+    return {"status": "ok", "service": "OTTO OCR microservice", "version": "2.0.0"}
