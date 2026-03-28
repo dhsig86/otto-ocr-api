@@ -1,0 +1,171 @@
+{
+  "tomografia": {
+    "achados_discriminativos": [
+      {
+        "termo": "infundibulo etmoidal",
+        "variantes": ["infundíbulo etmoidal", "infundibulo", "recesso infundibular"],
+        "peso": "ALTO",
+        "significado": "Via de drenagem do seio maxilar. Obliteração → sinusite obstrutiva por bloqueio do meato médio."
+      },
+      {
+        "termo": "curvatura paradoxal do corneto",
+        "variantes": ["curvatura paradoxal do corneto médio", "corneto médio paradoxal", "concha média paradoxal"],
+        "peso": "ALTO",
+        "significado": "Variante anatômica obstrutiva do meato médio. Pior prognóstico quando associada à concha bolhosa (pneumatização do corneto médio)."
+      },
+      {
+        "termo": "concha bolhosa",
+        "variantes": ["corneto bolhoso", "concha media bolhosa", "pneumatização do corneto médio"],
+        "peso": "ALTO",
+        "significado": "Pneumatização do corneto médio — causa obstrução do meato médio e sinusite de repetição. Indicação cirúrgica frequente."
+      },
+      {
+        "termo": "esporão ósseo do septo",
+        "variantes": ["esporão ósseo", "esporão septal", "esporão de base larga"],
+        "peso": "ALTO",
+        "significado": "Deformidade óssea do septo. Compressão do corneto médio ipsilateral → obstrução. Indicação de septoplastia."
+      },
+      {
+        "termo": "nível líquido",
+        "variantes": ["nível hidroaéreo", "nivel liquido", "conteúdo líquido"],
+        "peso": "ALTO",
+        "significado": "Sugere componente agudo sobreposto à sinusite crônica → diagnóstico de SINUSITE CRÔNICA AGUDIZADA."
+      },
+      {
+        "termo": "obliteração dos óstios",
+        "variantes": ["obliteração dos ostios de drenagem", "ostios obliterados", "vias de drenagem obliteradas"],
+        "peso": "ALTO",
+        "significado": "Bloqueio das vias de drenagem sinusal — indica necessidade de FESS (cirurgia endoscópica funcional dos seios)."
+      },
+      {
+        "termo": "espessamento mucoso",
+        "variantes": ["espessamento do revestimento mucoso", "espessamento da mucosa"],
+        "peso": "MÉDIO",
+        "significado": "Sinal de inflamação crônica sinusal. Avaliar extensão e associação com obstrução."
+      },
+      {
+        "termo": "cisto de retenção",
+        "variantes": ["cisto de retencao", "pequeno cisto", "pólipo"],
+        "peso": "MÉDIO",
+        "significado": "Cisto mucoso ou pólipo — pode obstruir drenagem se volumoso. Acompanhar ou ressecar na FESS."
+      },
+      {
+        "termo": "tonsilolito",
+        "variantes": ["tonsilolitos", "cálculo tonsilar", "calculo tonsilar"],
+        "peso": "MÉDIO",
+        "significado": "Cálcio nas tonsilas palatinas — associado à amigdalite de repetição e halitose. Avaliar tonsilectomia."
+      },
+      {
+        "termo": "torus palatino",
+        "variantes": ["tórus palatino", "torus", "exostose palatina"],
+        "peso": "BAIXO",
+        "significado": "Variante anatômica benigna. Relevante apenas para procedimentos orais/protéticos."
+      },
+      {
+        "termo": "desvio septal",
+        "variantes": ["desvio do septo nasal", "septo sinuoso", "septo desviado"],
+        "peso": "MÉDIO",
+        "significado": "Desvio da linha média. Avaliar lado, grau e associação com esporão e obstrução nasal."
+      }
+    ],
+    "diagnosticos_compostos": [
+      {
+        "condicao": "espessamento_mucoso + nivel_liquido",
+        "diagnostico": "Sinusite crônica agudizada",
+        "justificativa": "Espessamento crônico (base) com nível líquido (componente agudo) — não usar apenas 'sinusite crônica'"
+      },
+      {
+        "condicao": "infundibulo_obliterado + desvio_septo",
+        "diagnostico": "Obstrução do complexo ostiomeatal com indicação de FESS",
+        "justificativa": "Duplo fator obstrutivo anatômico + inflamatório"
+      },
+      {
+        "condicao": "curvatura_paradoxal + infundibulo_obliterado",
+        "diagnostico": "Obstrução meato médio por variante anatômica + processo inflamatório",
+        "justificativa": "Curvatura paradoxal piora obstrução quando associada à mucosidade no infundíbulo"
+      }
+    ]
+  },
+  "audiometria": {
+    "achados_discriminativos": [
+      {
+        "termo": "gap osteoacústico",
+        "variantes": ["gap osseoaéreo", "gap aéreo-ósseo", "diferença via aérea via óssea"],
+        "peso": "ALTO",
+        "significado": "Gap > 15 dB sugere componente condutivo (otite média, otosclerose, disrupção ossicular)."
+      },
+      {
+        "termo": "entalhe de 4kHz",
+        "variantes": ["entalhe em 4000 Hz", "queda em 4kHz", "perda em 4kHz"],
+        "peso": "ALTO",
+        "significado": "Padrão clássico de perda auditiva por ruído (PAINPSE). Bilateral assimétrica é hallmark."
+      },
+      {
+        "termo": "curva descendente",
+        "variantes": ["perda nas altas frequências", "queda progressiva nas altas"],
+        "peso": "MÉDIO",
+        "significado": "Perda neurossensorial típica do envelhecimento (presbiacusia) ou exposição a ruído."
+      },
+      {
+        "termo": "anacusia",
+        "variantes": ["perda total", "surdez profunda"],
+        "peso": "ALTO",
+        "significado": "Limiar > 90 dB — avaliar indicação de implante coclear."
+      }
+    ]
+  },
+  "bera": {
+    "achados_discriminativos": [
+      {
+        "termo": "latência aumentada da onda V",
+        "variantes": ["aumento da latência V", "latência V prolongada"],
+        "peso": "ALTO",
+        "significado": "Sugere disfunção retrococlear (neurinoma do acústico, doença desmielinizante)."
+      },
+      {
+        "termo": "intervalo interpico I-V",
+        "variantes": ["diferença I-V", "IPL I-V"],
+        "peso": "ALTO",
+        "significado": "IPL I-V > 4.4ms = alteração de condução do tronco encefálico auditivo."
+      }
+    ]
+  },
+  "videolaringoscopia": {
+    "achados_discriminativos": [
+      {
+        "termo": "paresia de prega vocal",
+        "variantes": ["paralisia de corda vocal", "paralisia de prega vocal", "imobilidade de corda vocal"],
+        "peso": "ALTO",
+        "significado": "Avaliar etiologia neurológica (nervo recorrente laríngeo). Investigar tireoide, pulmão, mediastino."
+      },
+      {
+        "termo": "edema de Reinke",
+        "variantes": ["edema subepitelial", "degeneração gelatinosa"],
+        "peso": "ALTO",
+        "significado": "Associado fortemente ao tabagismo. Bilateral. Tratamento: cessação do tabaco + microcirurgia."
+      },
+      {
+        "termo": "leucoplasia",
+        "variantes": ["lesão branca de prega vocal", "placa branca laríngea"],
+        "peso": "ALTO",
+        "significado": "BIÓPSIA obrigatória — descartado carcinoma in situ ou invasivo."
+      }
+    ]
+  },
+  "endoscopia_nasal": {
+    "achados_discriminativos": [
+      {
+        "termo": "hipertrofia de adenoide",
+        "variantes": ["hipertrofia adenoideana", "vegetações adenoides volumosas"],
+        "peso": "ALTO",
+        "significado": "Graus III-IV com obstrução de coana → indicação de adenoidectomia."
+      },
+      {
+        "termo": "pólipo nasal",
+        "variantes": ["polipose nasal", "pólipo em meato médio"],
+        "peso": "ALTO",
+        "significado": "Massa inflamatória — avaliar extensão e associação com asma/AINE-hipersensibilidade (tríade de Samter)."
+      }
+    ]
+  }
+}
