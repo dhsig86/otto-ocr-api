@@ -49,6 +49,12 @@ def extract_and_strip_header(raw_text: str) -> tuple[str, str]:
     header_raw = "\n".join(header_lines)
     body_safe = "\n".join(body_lines)
     
+    # Fallback caso não seja encontrado nenhum marcador claro de conteúdo no laudo.
+    # Sem isso, todo o texto vira 'header_lines' e o 'body' fica vazio, causando 0 caracteres extraídos.
+    if not header_done and len(lines) > 0:
+        body_safe = raw_text
+        header_raw = "\n".join(lines[:5])
+    
     return body_safe, header_raw
 
 
@@ -62,7 +68,21 @@ def strip_pii_from_text(raw_text: str) -> str:
     # CPF (ex: 123.456.789-00 ou 12345678900)
     text = re.sub(r'\b\d{3}\.?\d{3}\.?\d{3}-?\d{2}\b', '[CPF OMITIDO]', raw_text)
     # Nomes após "Paciente:", "Paciente...:", "Nome:"
-    text = re.sub(r'(?i)(paciente\.{0,3}:|nome)[:\s]+([A-Za-zÀ-ÖØ-öø-ÿ\s]+)(?=\n|$|\r)', r'\1 [NOME OMITIDO]', text)
+    # Trocamos [NOME OMITIDO] por um hash curto para manter o contexto textual (criptografia leve)
+    def _anonymize_name(match):
+        prefix = match.group(1)
+        name = match.group(2).strip()
+        if name:
+            import hashlib
+            h = hashlib.sha256(name.encode('utf-8')).hexdigest()[:6].upper()
+            return f"{prefix} [Paciente_{h}]"
+        return f"{prefix} [NOME PROTEGIDO]"
+
+    text = re.sub(
+        r'(?i)(paciente\.{0,3}:|nome)[:\s]+([A-Za-zÀ-ÖØ-öø-ÿ \']+?)(?=\s{3,}|\t|data:|idade:|nasc|rg:|cpf:|sexo:|\n|$|\r)', 
+        _anonymize_name, 
+        text
+    )
     # RG
     text = re.sub(r'(?i)(rg|registro\s+geral)[:\s]+([0-9xX.\-\s]+)(?=\n|$|\r)', r'\1: [RG OMITIDO]', text)
     # Data de nascimento
