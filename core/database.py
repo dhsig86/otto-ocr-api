@@ -43,15 +43,17 @@ def init_db():
     with get_connection() as conn:
         conn.executescript("""
             CREATE TABLE IF NOT EXISTS jobs (
-                job_id      TEXT PRIMARY KEY,
-                patient_token TEXT,
-                filename    TEXT,
-                exam_type   TEXT,
-                status      TEXT DEFAULT 'queued',
-                message     TEXT,
-                result_json TEXT,
-                created_at  TEXT DEFAULT (datetime('now')),
-                updated_at  TEXT DEFAULT (datetime('now'))
+                job_id          TEXT PRIMARY KEY,
+                patient_token   TEXT,
+                case_token      TEXT,        -- [M3] token do caso OTTO (via medico.js ou paciente chat)
+                encounter_token TEXT,        -- [M3] token do encounter específico (retorno vs base)
+                filename        TEXT,
+                exam_type       TEXT,
+                status          TEXT DEFAULT 'queued',
+                message         TEXT,
+                result_json     TEXT,
+                created_at      TEXT DEFAULT (datetime('now')),
+                updated_at      TEXT DEFAULT (datetime('now'))
             );
 
             CREATE TABLE IF NOT EXISTS validations (
@@ -74,31 +76,44 @@ def init_db():
                 created_at      TEXT DEFAULT (datetime('now'))
             );
         """)
+        # [M3] Migração segura: adiciona colunas novas se banco antigo não as tiver
+        existing_cols = {row[1] for row in conn.execute("PRAGMA table_info(jobs)").fetchall()}
+        if "case_token" not in existing_cols:
+            conn.execute("ALTER TABLE jobs ADD COLUMN case_token TEXT")
+            print("[M3][MIGRATION] Coluna case_token adicionada à tabela jobs.")
+        if "encounter_token" not in existing_cols:
+            conn.execute("ALTER TABLE jobs ADD COLUMN encounter_token TEXT")
+            print("[M3][MIGRATION] Coluna encounter_token adicionada à tabela jobs.")
 
 
 # ─── Jobs ────────────────────────────────────────────────────────────────────
 
-def create_job(job_id: str, filename: str) -> None:
+def create_job(job_id: str, filename: str, case_token: str = None, encounter_token: str = None) -> None:
+    """[M3] Aceita case_token e encounter_token opcionais para vínculo clínico imediato."""
     with get_connection() as conn:
         conn.execute(
-            "INSERT OR IGNORE INTO jobs (job_id, filename) VALUES (?, ?)",
-            (job_id, filename)
+            "INSERT OR IGNORE INTO jobs (job_id, filename, case_token, encounter_token) VALUES (?, ?, ?, ?)",
+            (job_id, filename, case_token, encounter_token)
         )
 
 def update_job(job_id: str, status: str, message: str, result: dict = None,
-               patient_token: str = None, exam_type: str = None) -> None:
+               patient_token: str = None, exam_type: str = None,
+               case_token: str = None, encounter_token: str = None) -> None:
+    """[M3] Suporta atualização de case_token e encounter_token."""
     result_json = json.dumps(result, ensure_ascii=False) if result else None
     with get_connection() as conn:
         conn.execute("""
             UPDATE jobs SET
-                status = ?,
-                message = ?,
-                result_json = COALESCE(?, result_json),
-                patient_token = COALESCE(?, patient_token),
-                exam_type = COALESCE(?, exam_type),
-                updated_at = datetime('now')
+                status          = ?,
+                message         = ?,
+                result_json     = COALESCE(?, result_json),
+                patient_token   = COALESCE(?, patient_token),
+                exam_type       = COALESCE(?, exam_type),
+                case_token      = COALESCE(?, case_token),
+                encounter_token = COALESCE(?, encounter_token),
+                updated_at      = datetime('now')
             WHERE job_id = ?
-        """, (status, message, result_json, patient_token, exam_type, job_id))
+        """, (status, message, result_json, patient_token, exam_type, case_token, encounter_token, job_id))
 
 def get_job(job_id: str) -> dict | None:
     with get_connection() as conn:
