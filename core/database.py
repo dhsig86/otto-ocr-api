@@ -13,7 +13,8 @@ import uuid
 from datetime import datetime
 from pathlib import Path
 
-DB_PATH = Path(__file__).parent / "otto_ocr.db"
+DB_PATH = Path(__file__).parent.parent / "otto_ocr.db"
+SEED_PATH = Path(__file__).parent.parent / "seed" / "otto_ocr_seed.db"  # seed incluído no build
 
 
 def get_connection():
@@ -22,8 +23,20 @@ def get_connection():
     return conn
 
 
+def _apply_seed():
+    """
+    Se o banco ativo não existe mas há um seed no container, copia o seed.
+    Isso preserva as correções médicas entre deploys sem expor PII.
+    """
+    if not DB_PATH.exists() and SEED_PATH.exists():
+        import shutil
+        shutil.copy2(str(SEED_PATH), str(DB_PATH))
+        print(f"[DB] Banco iniciado a partir do seed: {SEED_PATH}")
+
+
 def init_db():
     """Cria as tabelas se não existirem."""
+    _apply_seed()
     with get_connection() as conn:
         conn.executescript("""
             CREATE TABLE IF NOT EXISTS jobs (
