@@ -10,10 +10,13 @@ Armazena jobs OCR e correções médicas de forma persistente para:
 import sqlite3
 import json
 import uuid
+import os
 from datetime import datetime
 from pathlib import Path
 
-DB_PATH = Path(__file__).parent.parent / "otto_ocr.db"
+# Permite configuração via variável de ambiente para uso de Render Disk (efêmero -> persistente)
+db_env = os.getenv("SQLITE_DB_PATH")
+DB_PATH = Path(db_env) if db_env else Path(__file__).parent.parent / "otto_ocr.db"
 SEED_PATH = Path(__file__).parent.parent / "seed" / "otto_ocr_seed.db"  # seed incluído no build
 
 
