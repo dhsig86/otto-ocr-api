@@ -25,11 +25,13 @@ app = FastAPI(
     version="3.0.0"
 )
 
+# CORS: allow_credentials=True é INCOMPATÍVEL com allow_origins=["*"] pela spec CORS.
+# Com credentials=False o wildcard funciona corretamente para upload de FormData.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
+    allow_credentials=False,
+    allow_methods=["POST", "GET", "OPTIONS"],
     allow_headers=["*"],
 )
 
@@ -143,7 +145,9 @@ async def process_job(job_id: str, file_bytes: bytes, filename: str):
 
 # ─── Rotas ───────────────────────────────────────────────────────────────────
 
-@app.post("/ocr/upload")
+# Rota corrigida: /api/upload (compatível com frontend OTTO PROCOD) + alias legado /ocr/upload
+@app.post("/api/upload")
+@app.post("/api/upload/")  # trailing-slash alias para evitar 307 redirect
 async def upload_document(background_tasks: BackgroundTasks, file: UploadFile = File(...)):
     """Inicia extração assíncrona de laudo médico (PDF ou imagem)."""
     job_id = str(uuid.uuid4())
@@ -152,6 +156,10 @@ async def upload_document(background_tasks: BackgroundTasks, file: UploadFile = 
     update_job(job_id, status="queued", message="Protocolo gerado. Processamento iniciado.")
     background_tasks.add_task(process_job, job_id, file_bytes, file.filename)
     return {"job_id": job_id, "status": "queued"}
+
+@app.post("/ocr/upload")  # alias legado — mantido para não quebrar outros clientes
+async def upload_document_legacy(background_tasks: BackgroundTasks, file: UploadFile = File(...)):
+    return await upload_document(background_tasks, file)
 
 @app.get("/ocr/{job_id}/result")
 async def get_ocr_result(job_id: str):
