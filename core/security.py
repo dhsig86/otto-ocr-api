@@ -2,6 +2,49 @@ import re
 import uuid
 import hashlib
 
+# Padrões de data aceitos nos laudos (DD/MM/AAAA, DD-MM-AAAA, AAAA-MM-DD)
+_DATE_PATTERNS = [
+    # "Data: 06/01/2021" | "Data do Exame: 06/01/2021" | "Data de Realização: ..."
+    r'(?:data[\w\s]*?:)\s*(\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4})',
+    # "Realizado em: 06/01/2021"
+    r'(?:realizado\s+em|executado\s+em|data\s+de\s+realiza[cç][aã]o)[:\s]+(\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4})',
+    # Data solta no cabeçalho: "06/01/2021" ou "2021-01-06"
+    r'\b(\d{4}[-\/]\d{2}[-\/]\d{2})\b',
+    r'\b(\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{4})\b',
+]
+
+def extract_exam_date(header_raw: str, body_text: str = "") -> str:
+    """
+    Extrai a data de execução do exame a partir do cabeçalho bruto ou do corpo do texto.
+    Chamada ANTES do descarte LGPD — data de exame é metadado clínico, não dado pessoal.
+    Retorna string ISO 'AAAA-MM-DD' ou string original se não conseguir normalizar.
+    Retorna "" se nenhuma data for encontrada.
+    """
+    search_text = header_raw + "\n" + body_text[:800]
+
+    for pattern in _DATE_PATTERNS:
+        m = re.search(pattern, search_text, re.IGNORECASE)
+        if m:
+            raw_date = m.group(1).strip()
+            # Normalizar para AAAA-MM-DD
+            return _normalize_date(raw_date)
+
+    return ""
+
+def _normalize_date(raw: str) -> str:
+    """Tenta converter a data capturada para AAAA-MM-DD."""
+    sep_match = re.match(r'(\d{1,4})([\/\-\.])(\d{1,2})\2(\d{2,4})', raw)
+    if not sep_match:
+        return raw  # retorna como veio
+    a, _, b, c = sep_match.group(1), sep_match.group(2), sep_match.group(3), sep_match.group(4)
+    # AAAA-MM-DD
+    if len(a) == 4:
+        return f"{a}-{b.zfill(2)}-{c.zfill(2)}"
+    # DD/MM/AAAA → AAAA-MM-DD
+    year = c if len(c) == 4 else f"20{c}"
+    return f"{year}-{b.zfill(2)}-{a.zfill(2)}"
+
+
 def generate_patient_token(raw_header_text: str = "") -> str:
     """
     Gera um token anônimo e auditável para o paciente.

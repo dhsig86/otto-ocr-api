@@ -13,7 +13,7 @@ from services.ocr_engine import OCRBaseEngine
 from services.nlp_parser import NLPParser
 from services.gpt_bridge import GPTSummarizer
 from services.exam_classifier import ExamClassifier
-from core.security import strip_pii_from_text, extract_and_strip_header, generate_patient_token
+from core.security import strip_pii_from_text, extract_and_strip_header, generate_patient_token, extract_exam_date
 from core.database import init_db, create_job, update_job, get_job, save_validation, get_lexical_stats
 
 # Inicializa o banco de dados SQLite na primeira execução
@@ -86,9 +86,10 @@ async def process_job(job_id: str, file_bytes: bytes, filename: str):
             update_job(job_id, status="processing", message="Imagem detectada. Iniciando motor OCR...")
             text = ocr_engine.extract_from_image_bytes(file_bytes)
 
-        # Etapa 2: LGPD
+        # Etapa 2: LGPD — extrair data ANTES de descartar o cabeçalho
         update_job(job_id, status="processing", message="Aplicando protocolo LGPD...")
         safe_body, header_raw = extract_and_strip_header(text)
+        exam_date = extract_exam_date(header_raw, safe_body)  # data é metadado clínico, não PII
         patient_token = generate_patient_token(header_raw)
         safe_body = strip_pii_from_text(safe_body)
 
@@ -129,6 +130,7 @@ async def process_job(job_id: str, file_bytes: bytes, filename: str):
 
         result = {
             "patient_token": patient_token,
+            "exam_date": exam_date,
             "exam_type": exam_type,
             "exam_label": exam_label,
             "was_raster_engine_used": is_raster,
