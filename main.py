@@ -1,11 +1,10 @@
-from fastapi import FastAPI, File, UploadFile, BackgroundTasks, Header, HTTPException, Query
+from fastapi import FastAPI, File, UploadFile, BackgroundTasks, Header, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, FileResponse
 import os
 from pydantic import BaseModel
 import uuid
 from pathlib import Path
-from typing import Optional
 
 BASE_DIR = Path(__file__).parent
 
@@ -145,26 +144,14 @@ async def process_job(job_id: str, file_bytes: bytes, filename: str):
 # ─── Rotas ───────────────────────────────────────────────────────────────────
 
 @app.post("/ocr/upload")
-async def upload_document(
-    background_tasks: BackgroundTasks,
-    file: UploadFile = File(...),
-    case_token: Optional[str] = Query(default=None, description="[M3] Token do caso OTTO para vínculo clínico"),
-    encounter_token: Optional[str] = Query(default=None, description="[M3] Token do encounter específico"),
-):
-    """Inicia extração assíncrona de laudo médico (PDF ou imagem).
-    
-    [M3] Aceita case_token e encounter_token opcionais para vínculo persitente ao caso OTTO.
-    Se fornecidos, são gravados imediatamente no job no banco de dados, garantindo que
-    um restart/redeploy não quebre o vínculo entre laudo e caso clínico.
-    """
+async def upload_document(background_tasks: BackgroundTasks, file: UploadFile = File(...)):
+    """Inicia extração assíncrona de laudo médico (PDF ou imagem)."""
     job_id = str(uuid.uuid4())
     file_bytes = await file.read()
-    create_job(job_id, file.filename, case_token=case_token, encounter_token=encounter_token)
+    create_job(job_id, file.filename)
     update_job(job_id, status="queued", message="Protocolo gerado. Processamento iniciado.")
-    if case_token:
-        print(f"[M3][UPLOAD] job_id={job_id} vinculado ao case_token={case_token} encounter={encounter_token}")
     background_tasks.add_task(process_job, job_id, file_bytes, file.filename)
-    return {"job_id": job_id, "status": "queued", "case_token": case_token, "encounter_token": encounter_token}
+    return {"job_id": job_id, "status": "queued"}
 
 @app.get("/ocr/{job_id}/result")
 async def get_ocr_result(job_id: str):
