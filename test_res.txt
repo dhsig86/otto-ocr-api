@@ -1,0 +1,26 @@
+--- BODY SAFE ---
+EXAME DE ENDOSCOPIA NASAL
+Exame realizado com fibra rígida 30°
+Anestesia e vasoconstritor tópicos: sim
+
+Nome: Julia Montari Fonseca Marques              Data: 06/01/2021
+
+NARIZ
+Septo nasal: Septo Centrado. Desvio alto não obstrutiva.
+
+Meatos Nasais:
+Inferiores: Obstruídos por mucosa redundante.
+
+--- PII STRIPPED ---
+EXAME DE ENDOSCOPIA NASAL
+Exame realizado com fibra rígida 30°
+Anestesia e vasoconstritor tópicos: sim
+
+Nome [Paciente_14F5D9]              Data: 06/01/2021
+
+NARIZ
+Septo nasal: Septo Centrado. Desvio alto não obstrutiva.
+
+Meatos Nasais:
+Inferiores: Obstruídos por mucosa redundante.
+

@@ -4,8 +4,8 @@ import hashlib
 
 # Padrões de data aceitos nos laudos (DD/MM/AAAA, DD-MM-AAAA, AAAA-MM-DD)
 _DATE_PATTERNS = [
-    # "Data: 06/01/2021" | "Data do Exame: 06/01/2021" | "Data de Realização: ..."
-    r'(?:data[\w\s]*?:)\s*(\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4})',
+    # "Data: 06/01/2021" | "Data do Exame: 06/01/2021" | "Emissão: ..." com possíveis caracteres lixo do OCR
+    r'(?:data[\w\s]*?|emiss[aã]o)[\s:]*(\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4})',
     # "Realizado em: 06/01/2021"
     r'(?:realizado\s+em|executado\s+em|data\s+de\s+realiza[cç][aã]o)[:\s]+(\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4})',
     # Data solta no cabeçalho: "06/01/2021" ou "2021-01-06"

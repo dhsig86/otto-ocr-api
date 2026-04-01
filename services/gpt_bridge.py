@@ -19,6 +19,7 @@ _LEXICAL_KB = _load_kb()
 class GPTAnalysisResult(BaseModel):
     summary: str = Field(description="Resumo clínico de 3 a 5 linhas do laudo.")
     findings: list[str] = Field(description="Achados relevantes (máximo 8). INCLUA variantes anatômicas e obstruções de via de drenagem.")
+    normal_standards: str | None = Field(description="Sintetize em uma linha os elementos do exame que estão dentro dos padrões de normalidade.", default=None)
     diagnostics: list[str] = Field(description="Diagnósticos diferenciais ou condutas sugeridas (sem recomendações definitivas).")
 
 
@@ -28,6 +29,7 @@ _BASE_PROMPTS = {
         Você é especialista em audiologia clínica. Analise o laudo de audiometria a seguir.
         Identifique: tipo e grau de perda auditiva (condutiva/neurossensorial/mista), orelhas afetadas,
         frequências comprometidas e correlações clínicas (zumbido, vertigem, hipoacusia progressiva).
+        Sintetize em uma linha os achados e elementos que estão dentro dos padrões de normalidade.
         Não dê recomendações médicas definitivas.
     """,
     "bera": """

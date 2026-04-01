@@ -38,13 +38,22 @@ class OCRBaseEngine:
         img = img.point(lambda p: 255 if p > 128 else 0)
         return self._ocr(img, dpi="150")
 
+    def _strategy_sparse(self, raw: bytes) -> str:
+        """Estratégia 4: PSM 11 (Sparse text).
+        Melhor para resgatar texto limpo em formulários com tabelas ou grades densas (ex: audiometrias),
+        onde o Tesseract tentaria ler as colunas da grade e gerar alucinações."""
+        img = Image.open(io.BytesIO(raw)).convert("L")
+        img = ImageEnhance.Contrast(img).enhance(1.8)
+        config = "--psm 11 --oem 1 --dpi 150"
+        return pytesseract.image_to_string(img, lang="por", config=config)
+
     def extract_from_image_bytes(self, image_bytes: bytes) -> str:
         """
-        Extrai texto de imagem (JPEG/PNG) com 3 estratégias em cascata.
+        Extrai texto de imagem (JPEG/PNG) com 4 estratégias em cascata.
         Retorna o resultado com mais caracteres.
         """
         results = []
-        for strategy in (self._strategy_original, self._strategy_enhanced, self._strategy_binarize):
+        for strategy in (self._strategy_original, self._strategy_enhanced, self._strategy_binarize, self._strategy_sparse):
             try:
                 text = strategy(image_bytes)
                 results.append(text.strip())
