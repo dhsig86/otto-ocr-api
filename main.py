@@ -128,6 +128,15 @@ async def process_job(job_id: str, file_bytes: bytes, filename: str):
         update_job(job_id, status="processing", message=f"Enviando para análise clínica GPT ({exam_label})...")
         gpt_analysis = await gpt_bridge.summarize(safe_body, exam_type)
 
+        if not gpt_analysis.get("is_valid_exam", True):
+            msg = (
+                "A inteligência clínica de fallback detectou texto ilegível (ruído de OCR) ou que a imagem corresponde a um gráfico/tabela ininteligível. "
+                "Por favor, certifique-se de enviar a folha textual do laudo com resultados, em boa qualidade e iluminação."
+            )
+            update_job(job_id, status="low_confidence", message=msg,
+                       result=None, patient_token=patient_token, exam_type=exam_type)
+            return
+
         result = {
             "patient_token": patient_token,
             "exam_date": exam_date,

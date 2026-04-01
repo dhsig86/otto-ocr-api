@@ -223,6 +223,18 @@
         "variantes": ["dessaturação", "saturação mínima < 90%", "saturação baixa"],
         "peso": "ALTO",
         "significado": "Quedas na oxigenação sanguínea ligadas aos eventos respiratórios. Indica gravidade fisiológica da apneia."
+      },
+      {
+        "termo": "sono fragmentado",
+        "variantes": ["fragmentação do sono", "microdespertares elevados", "índice de despertares aumentado"],
+        "peso": "ALTO",
+        "significado": "Aumento do índice de despertares. Interrupções na arquitetura do sono, prejudicando o repouso. Costuma agravar sonolência diurna (Epworth)."
+      },
+      {
+        "termo": "PLM",
+        "variantes": ["movimentos periódicos dos membros", "movimentos de membros inferiores", "PLMs"],
+        "peso": "MÉDIO",
+        "significado": "Movimentos repetitivos nas pernas durante o sono. Pode ou não causar despertares associados."
       }
     ]
   }

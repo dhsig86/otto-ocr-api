@@ -17,6 +17,7 @@ _LEXICAL_KB = _load_kb()
 
 
 class GPTAnalysisResult(BaseModel):
+    is_valid_exam: bool = Field(description="Obrigatório ser Falso se o texto fornecido for lixo de OCR (letras aleatórias) ou não for minimamente compreensível como trecho de laudo médico.", default=True)
     summary: str = Field(description="Resumo clínico de 3 a 5 linhas do laudo.")
     findings: list[str] = Field(description="Achados relevantes (máximo 8). INCLUA variantes anatômicas e obstruções de via de drenagem.")
     normal_standards: str | None = Field(description="Sintetize em uma linha os elementos do exame que estão dentro dos padrões de normalidade.", default=None)
