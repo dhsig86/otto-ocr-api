@@ -60,6 +60,13 @@ _BASE_PROMPTS = {
         Se houver espessamento crônico COM nível líquido, classifique como 'sinusite crônica agudizada'.
         Não dê recomendações médicas definitivas.
     """,
+    "polissonografia": """
+        Você é especialista em medicina do sono. Analise o laudo de polissonografia a seguir.
+        Identifique o Índice de Apneia/Hipopneia (IAH), eficiência do sono, percentual de sono REM, e parâmetros de oximetria.
+        Classifique a apneia pelo IAH (normal < 5, leve 5-14.9, moderado 15-29.9, grave >= 30).
+        Sintetize em uma linha os achados e elementos que estão dentro dos padrões de normalidade.
+        Não dê recomendações médicas definitivas.
+    """,
     "generico": """
         Você é especialista em otorrinolaringologia. Analise o laudo a seguir,
         identificando o tipo de exame, os achados relevantes e as implicações clínicas.

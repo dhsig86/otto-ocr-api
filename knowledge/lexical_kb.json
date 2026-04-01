@@ -167,5 +167,45 @@
         "significado": "Massa inflamatória — avaliar extensão e associação com asma/AINE-hipersensibilidade (tríade de Samter)."
       }
     ]
+  },
+  "polissonografia": {
+    "achados_discriminativos": [
+      {
+        "termo": "apneia grave",
+        "variantes": ["IAH grave", "apneia acentuada", "índice maior que 30", "IAH >= 30", "IAH > 30"],
+        "peso": "ALTO",
+        "significado": "IAH ≥ 30 eventos/hora. Apneia obstrutiva do sono de grau grave. Alto risco cardiovascular e indicação de CPAP."
+      },
+      {
+        "termo": "apneia moderada",
+        "variantes": ["IAH moderado", "apneia de grau moderado"],
+        "peso": "ALTO",
+        "significado": "IAH entre 15 e 29,9 eventos/hora. Apneia obstrutiva do sono de grau moderado."
+      },
+      {
+        "termo": "apneia leve",
+        "variantes": ["IAH leve", "apneia de grau leve"],
+        "peso": "ALTO",
+        "significado": "IAH entre 5 e 14,9 eventos/hora. Apneia obstrutiva do sono de grau leve."
+      },
+      {
+        "termo": "sono normal",
+        "variantes": ["sem apneia", "IAH normal"],
+        "peso": "MÉDIO",
+        "significado": "IAH < 5 eventos/hora. Padrão respiratório do sono dentro da normalidade."
+      },
+      {
+        "termo": "eficiência do sono",
+        "variantes": ["eficiência reduzida", "eficiência diminuída"],
+        "peso": "MÉDIO",
+        "significado": "Tempo total de sono dividido pelo tempo na cama."
+      },
+      {
+        "termo": "sono REM",
+        "variantes": ["percentual de sono REM", "estágio REM"],
+        "peso": "MÉDIO",
+        "significado": "Estágio de atonia muscular onde apneias tendem a ser mais prolongadas e causar maior dessaturação."
+      }
+    ]
   }
 }

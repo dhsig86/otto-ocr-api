@@ -44,6 +44,17 @@ EXAM_PATTERNS = {
         r"seio\s+(maxilar|etmoidal|esfenoidal|frontal)",
         r"espessamento\s+mucoso",
     ],
+    "polissonografia": [
+        r"polissonografia",
+        r"\biah\b",
+        r"[ií]ndice\s+de\s+apneia",
+        r"apneia.hipopneia",
+        r"hipopneia",
+        r"arquitetura\s+do\s+sono",
+        r"sono\s+rem",
+        r"oximetria",
+        r"dessatura[çc][ãa]o",
+    ],
 }
 
 EXAM_LABELS = {
@@ -52,6 +63,7 @@ EXAM_LABELS = {
     "videolaringoscopia": "Videolaringoscopia / Nasofibrolaringoscopia",
     "endoscopia_nasal": "Videoendoscopia Nasal",
     "tomografia": "Tomografia Computadorizada",
+    "polissonografia": "Polissonografia",
     "generico": "Exame Otorrinolaringológico (Não Identificado)",
 }
 
