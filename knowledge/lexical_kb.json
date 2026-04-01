@@ -202,9 +202,27 @@
       },
       {
         "termo": "sono REM",
-        "variantes": ["percentual de sono REM", "estágio REM"],
+        "variantes": ["percentual de sono REM", "estágio R", "sono paradoxal"],
         "peso": "MÉDIO",
-        "significado": "Estágio de atonia muscular onde apneias tendem a ser mais prolongadas e causar maior dessaturação."
+        "significado": "Estágio de atonia muscular onde apneias tendem a ser mais prolongadas e causar maior dessaturação. Valores normais: 20 a 25%."
+      },
+      {
+        "termo": "tempo total de sono",
+        "variantes": ["TTS"],
+        "peso": "MÉDIO",
+        "significado": "Duração total de sono registrado durante o exame."
+      },
+      {
+        "termo": "ronco",
+        "variantes": ["ronco moderado", "roncos", "ronco primário", "ronco intermitente"],
+        "peso": "ALTO",
+        "significado": "Sinal clínico de aumento da resistência de vias aéreas superiores, frequentemente associado à apneia."
+      },
+      {
+        "termo": "dessaturação da oxi-hemoglobina",
+        "variantes": ["dessaturação", "saturação mínima < 90%", "saturação baixa"],
+        "peso": "ALTO",
+        "significado": "Quedas na oxigenação sanguínea ligadas aos eventos respiratórios. Indica gravidade fisiológica da apneia."
       }
     ]
   }

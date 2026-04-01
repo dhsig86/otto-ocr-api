@@ -62,9 +62,10 @@ _BASE_PROMPTS = {
     """,
     "polissonografia": """
         Você é especialista em medicina do sono. Analise o laudo de polissonografia a seguir.
-        Identifique o Índice de Apneia/Hipopneia (IAH), eficiência do sono, percentual de sono REM, e parâmetros de oximetria.
+        Identifique: Índice de Apneia/Hipopneia (IAH), Eficiência do Sono, Tempo Total de Sono (TTS), Latências (para o sono e REM), 
+        arquitetura do sono (percentuais de N1, N2, N3 e REM), parâmetros de oximetria (saturação basal, mínima e média) e presença de ronco.
         Classifique a apneia pelo IAH (normal < 5, leve 5-14.9, moderado 15-29.9, grave >= 30).
-        Sintetize em uma linha os achados e elementos que estão dentro dos padrões de normalidade.
+        Sintetize em uma linha os achados e parâmetros que estão dentro da normalidade.
         Não dê recomendações médicas definitivas.
     """,
     "generico": """
