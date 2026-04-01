@@ -75,14 +75,32 @@ def init_db():
             );
         """)
 
+        # Migrations for MLOps Pipeline
+        try:
+            conn.execute("ALTER TABLE jobs ADD COLUMN file_path TEXT")
+        except sqlite3.OperationalError:
+            pass
+        try:
+            conn.execute("ALTER TABLE jobs ADD COLUMN validation_status TEXT DEFAULT 'pending_validation'")
+        except sqlite3.OperationalError:
+            pass
+
 
 # ─── Jobs ────────────────────────────────────────────────────────────────────
 
-def create_job(job_id: str, filename: str) -> None:
+def create_job(job_id: str, filename: str, file_path: str = None) -> None:
     with get_connection() as conn:
         conn.execute(
-            "INSERT OR IGNORE INTO jobs (job_id, filename) VALUES (?, ?)",
-            (job_id, filename)
+            "INSERT OR IGNORE INTO jobs (job_id, filename, file_path, validation_status) VALUES (?, ?, ?, 'pending_validation')",
+            (job_id, filename, file_path)
+        )
+
+def update_validation_status(job_id: str, is_correct: bool) -> None:
+    status = 'validated_ok' if is_correct else 'validated_with_errors'
+    with get_connection() as conn:
+        conn.execute(
+            "UPDATE jobs SET validation_status = ?, updated_at = datetime('now') WHERE job_id = ?",
+            (status, job_id)
         )
 
 def update_job(job_id: str, status: str, message: str, result: dict = None,

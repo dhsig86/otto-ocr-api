@@ -14,7 +14,7 @@ from services.nlp_parser import NLPParser
 from services.gpt_bridge import GPTSummarizer
 from services.exam_classifier import ExamClassifier
 from core.security import strip_pii_from_text, extract_and_strip_header, generate_patient_token, extract_exam_date
-from core.database import init_db, create_job, update_job, get_job, save_validation, get_lexical_stats
+from core.database import init_db, create_job, update_job, get_job, save_validation, get_lexical_stats, update_validation_status
 
 # Inicializa o banco de dados SQLite na primeira execução
 init_db()
@@ -161,7 +161,14 @@ async def upload_document(background_tasks: BackgroundTasks, file: UploadFile = 
     """Inicia extração assíncrona de laudo médico (PDF ou imagem)."""
     job_id = str(uuid.uuid4())
     file_bytes = await file.read()
-    create_job(job_id, file.filename)
+    
+    # Armazena localmente o arquivo cru para futura esteira de MLOps
+    upload_dir = BASE_DIR / "uploads"
+    upload_dir.mkdir(exist_ok=True)
+    file_path = upload_dir / f"{job_id}_{file.filename}"
+    file_path.write_bytes(file_bytes)
+    
+    create_job(job_id, file.filename, file_path=str(file_path))
     update_job(job_id, status="queued", message="Protocolo gerado. Processamento iniciado.")
     background_tasks.add_task(process_job, job_id, file_bytes, file.filename)
     return {"job_id": job_id, "status": "queued"}
@@ -181,6 +188,7 @@ async def validate_ocr_result(job_id: str, payload: ValidationResult):
     if not job:
         return {"error": "Not Found"}
     save_validation(job_id, payload.is_correct, payload.corrections)
+    update_validation_status(job_id, payload.is_correct)
     return {"status": "success", "persisted": True}
 
 @app.get("/ocr/stats")
