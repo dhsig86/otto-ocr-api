@@ -71,6 +71,7 @@ def extract_and_strip_header(raw_text: str) -> tuple[str, str]:
         r"^exame:", r"^tipo\s+de\s+exame", r"^laudo", r"^resultado",
         r"^tomografia", r"^audiometria", r"^videolaringoscopia",
         r"^potencial\s+evocado", r"^videoendoscopia", r"^tc\b", r"^tcfc\b",
+        r"^polissonografia", r"^psg\b",
     ]
     
     lines = raw_text.splitlines()
