@@ -40,7 +40,7 @@ EXAM_PATTERNS = {
         r"\bTC\b",
         r"\bTCFC\b",
         r"seios\s+(da\s+)?face",
-        r"mastu00f3ide|mastoide",
+        r"mast[oó]ide",
         r"seio\s+(maxilar|etmoidal|esfenoidal|frontal)",
         r"espessamento\s+mucoso",
     ],
