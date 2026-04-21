@@ -35,6 +35,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.middleware("http")
+async def add_security_headers(request, call_next):
+    response = await call_next(request)
+    # Permite iframe embed para o OTTO PWA
+    response.headers.pop("X-Frame-Options", None)
+    response.headers["Content-Security-Policy"] = "frame-ancestors *"
+    return response
+
 # ─── Frontend: servido pela rota raiz ──────────────────────────────────────
 _HTML_CANDIDATES = [
     BASE_DIR / "static" / "index.html",
