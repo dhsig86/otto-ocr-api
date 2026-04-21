@@ -25,13 +25,22 @@ app = FastAPI(
     version="3.0.0"
 )
 
-# CORS: allow_credentials=True é INCOMPATÍVEL com allow_origins=["*"] pela spec CORS.
-# Com credentials=False o wildcard funciona corretamente para upload de FormData.
+# CORS: Adicionado dominio explicitamente para resolver Strict-Origin policy na request FormData
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=False,
-    allow_methods=["POST", "GET", "OPTIONS"],
+    allow_origins=[
+        "https://ocr.drdariohart.com",
+        "https://otto-pwa.vercel.app",
+        "https://otto-imune.vercel.app",
+        "http://localhost:3000",
+        "http://localhost:5173",
+        "http://localhost:8000",
+        "http://127.0.0.1:3000",
+        "http://127.0.0.1:5173",
+        "http://127.0.0.1:8000"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 
