@@ -29,15 +29,32 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
+        # ── Domínios customizados ──────────────────────────────────────────
         "https://ocr.drdariohart.com",
-        "https://otto-pwa.vercel.app",
+        "https://otto.drdariohart.com",
+        "https://procod.drdariohart.com",
+        "https://atlas.drdariohart.com",
+        "https://cases.drdariohart.com",
+        # ── Vercel deployments ────────────────────────────────────────────
+        "https://ottopwa.vercel.app",
+        "https://otto-pwa.vercel.app",          # legacy
+        "https://ottos-plum.vercel.app",
+        "https://otto-calc-hub.vercel.app",
         "https://otto-imune.vercel.app",
+        "https://otto-voice-one.vercel.app",
+        "https://bottok-orcin.vercel.app",
+        "https://test-pg-bice.vercel.app",
+        # ── Heroku / Netlify ──────────────────────────────────────────────
+        "https://otto-ai-triagem-1fc48c3c292e.herokuapp.com",
+        "https://otto-whisper.netlify.app",
+        "https://dhsig86.github.io",
+        # ── Desenvolvimento local ─────────────────────────────────────────
         "http://localhost:3000",
         "http://localhost:5173",
         "http://localhost:8000",
         "http://127.0.0.1:3000",
         "http://127.0.0.1:5173",
-        "http://127.0.0.1:8000"
+        "http://127.0.0.1:8000",
     ],
     allow_credentials=True,
     allow_methods=["*"],
