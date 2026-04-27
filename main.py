@@ -66,7 +66,8 @@ app.add_middleware(
 async def add_security_headers(request, call_next):
     response = await call_next(request)
     # Permite iframe embed para o OTTO PWA
-    response.headers.pop("X-Frame-Options", None)
+    if "X-Frame-Options" in response.headers:
+        del response.headers["X-Frame-Options"]
     response.headers["Content-Security-Policy"] = "frame-ancestors *"
     return response
 
