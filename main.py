@@ -44,6 +44,7 @@ app.add_middleware(
         "https://otto-voice-one.vercel.app",
         "https://bottok-orcin.vercel.app",
         "https://test-pg-bice.vercel.app",
+        "https://otto-ocr-web.vercel.app",
         # ── Heroku / Netlify ──────────────────────────────────────────────
         "https://otto-ai-triagem-1fc48c3c292e.herokuapp.com",
         "https://otto-whisper.netlify.app",
