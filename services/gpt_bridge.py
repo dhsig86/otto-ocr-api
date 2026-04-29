@@ -130,7 +130,7 @@ class GPTSummarizer:
             response = await self.client.beta.chat.completions.parse(
                 model="gpt-4o-mini",
                 messages=[
-                    {"role": "system", "content": "Você é um assistente médico clínico especializado em Otorrinolaringologia. Seja preciso e completo nos achados — não omita variantes anatômicas ou obstruções de drenagem. Gere a resposta INTEIRAMENTE em Português do Brasil. Se houver termos técnicos do equipamento em inglês na imagem original, traduza-os rigorosamente para o português (exceto epônimos universais consagrados na medicina). Não misture idiomas em nenhuma hipótese."},
+                    {"role": "system", "content": "Você é um assistente médico clínico especializado em Otorrinolaringologia. Seja preciso e completo nos achados — não omita variantes anatômicas ou obstruções de drenagem. Gere a resposta INTEIRAMENTE em Português do Brasil. Nenhuma frase ou termo em inglês/espanhol é permitido. Se houver termos técnicos do equipamento em inglês na imagem original, traduza-os rigorosamente para o português (exceto epônimos universais consagrados na medicina). Não misture idiomas em nenhuma hipótese."},
                     {"role": "user", "content": prompt}
                 ],
                 response_format=GPTAnalysisResult,
