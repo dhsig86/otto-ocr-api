@@ -22,6 +22,7 @@ class GPTAnalysisResult(BaseModel):
     findings: list[str] = Field(description="Achados relevantes (máximo 8). INCLUA variantes anatômicas e obstruções de via de drenagem.")
     normal_standards: str | None = Field(description="Sintetize em uma linha os elementos do exame que estão dentro dos padrões de normalidade.", default=None)
     diagnostics: list[str] = Field(description="Diagnósticos diferenciais ou condutas sugeridas (sem recomendações definitivas).")
+    succinct_insight: str = Field(description="Resumo sucinto focado puramente no achado principal e impressão diagnóstica, ideal para colar diretamente no sumário de um prontuário médico. Limite a 1-2 frases concisas.", default="")
 
 
 # Prompts base especializados por tipo de exame
@@ -129,7 +130,7 @@ class GPTSummarizer:
             response = await self.client.beta.chat.completions.parse(
                 model="gpt-4o-mini",
                 messages=[
-                    {"role": "system", "content": "Você é um assistente médico clínico especializado em Otorrinolaringologia. Seja preciso e completo nos achados — não omita variantes anatômicas ou obstruções de drenagem."},
+                    {"role": "system", "content": "Você é um assistente médico clínico especializado em Otorrinolaringologia. Seja preciso e completo nos achados — não omita variantes anatômicas ou obstruções de drenagem. Gere a resposta INTEIRAMENTE em Português do Brasil. Se houver termos técnicos do equipamento em inglês na imagem original, traduza-os rigorosamente para o português (exceto epônimos universais consagrados na medicina). Não misture idiomas em nenhuma hipótese."},
                     {"role": "user", "content": prompt}
                 ],
                 response_format=GPTAnalysisResult,
