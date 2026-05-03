@@ -45,6 +45,9 @@ app.add_middleware(
         "https://bottok-orcin.vercel.app",
         "https://test-pg-bice.vercel.app",
         "https://otto-ocr-web.vercel.app",
+        # ── Firebase Hosting ──────────────────────────────────────────────
+        "https://otto-ecosystem.web.app",
+        "https://otto-ecosystem.firebaseapp.com",
         # ── Heroku / Netlify ──────────────────────────────────────────────
         "https://otto-ai-triagem-1fc48c3c292e.herokuapp.com",
         "https://otto-whisper.netlify.app",

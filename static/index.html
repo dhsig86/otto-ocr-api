@@ -619,6 +619,15 @@
     ? 'http://localhost:8000'
     : 'https://otto-ocr-api.onrender.com';
 
+  // ── SERVER WARM-UP ───────────────────────────────────────────────────────
+  // Render free tier hibernates. Ping /health on load so the server is warm
+  // by the time the user picks a file (30–60s head start).
+  (function warmUpServer() {
+    fetch(`${API}/health`, {
+      signal: AbortSignal.timeout ? AbortSignal.timeout(20000) : undefined,
+    }).catch(() => {/* silently ignore — just a warm-up ping */});
+  })();
+
   // ── EMBED DETECTION ──────────────────────────────────────────────────────
   // Hide our own header/footer when running inside the OTTO PWA ModuleFrame
   (function detectEmbed() {
@@ -652,10 +661,10 @@
   })();
 
   // ── RECEIVE postMessage from OTTO PWA Shell (userId / profile / token) ──
+  // ModuleFrame sends type 'otto-context' (lowercase hyphenated)
   window.addEventListener('message', (e) => {
-    if (e.data && e.data.type === 'OTTO_CONTEXT') {
-      // Store context for potential use (e.g. attaching userId to OCR jobs)
-      window.__ottoContext = e.data;
+    if (e.data && (e.data.type === 'otto-context' || e.data.type === 'OTTO_CONTEXT')) {
+      window.__ottoContext = e.data.payload ?? e.data;
     }
   });
 
@@ -737,13 +746,24 @@
     }
 
     try {
-      const res  = await fetch(`${API}/ocr/upload`, { method: 'POST', body: form });
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 45000);
+      let res;
+      try {
+        res = await fetch(`${API}/ocr/upload`, { method: 'POST', body: form, signal: controller.signal });
+      } finally {
+        clearTimeout(timer);
+      }
       const data = await res.json();
       if (!res.ok || !data.job_id) throw new Error(data.detail || 'Erro no upload.');
       currentJobId = data.job_id;
       pollResult(currentJobId);
     } catch (err) {
-      showStatus(`❌ ${err.message}`, false);
+      const isTimeout = err.name === 'AbortError' || err.name === 'TimeoutError';
+      const msg = isTimeout
+        ? '⏳ O servidor OCR está acordando (Render free tier). Aguarde ~30s e tente novamente.'
+        : `❌ ${err.message}`;
+      showStatus(msg, false);
     }
   }
 
