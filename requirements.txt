@@ -10,3 +10,4 @@ openai
 spacy
 Pillow
 python-dotenv
+firebase-admin

@@ -1,10 +1,12 @@
-from fastapi import FastAPI, File, UploadFile, BackgroundTasks, Header, HTTPException
+from fastapi import FastAPI, File, UploadFile, BackgroundTasks, Header, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, FileResponse
 import os
 from pydantic import BaseModel
 import uuid
 from pathlib import Path
+
+from middleware.require_auth import verify_firebase_token
 
 BASE_DIR = Path(__file__).parent
 
@@ -196,8 +198,12 @@ async def process_job(job_id: str, file_bytes: bytes, filename: str):
 # ─── Rotas ───────────────────────────────────────────────────────────────────
 
 @app.post("/ocr/upload")
-async def upload_document(background_tasks: BackgroundTasks, file: UploadFile = File(...)):
-    """Inicia extração assíncrona de laudo médico (PDF ou imagem)."""
+async def upload_document(
+    background_tasks: BackgroundTasks,
+    file: UploadFile = File(...),
+    uid: str = Depends(verify_firebase_token),  # ACT-29: requer médico autenticado
+):
+    """Inicia extração assíncrona de laudo médico (PDF ou imagem). Requer Bearer token Firebase."""
     job_id = str(uuid.uuid4())
     file_bytes = await file.read()
     
@@ -221,8 +227,12 @@ async def get_ocr_result(job_id: str):
     return job
 
 @app.post("/ocr/{job_id}/validate")
-async def validate_ocr_result(job_id: str, payload: ValidationResult):
-    """Feedback médico persistido no banco de dados para retroalimentação lexical."""
+async def validate_ocr_result(
+    job_id: str,
+    payload: ValidationResult,
+    uid: str = Depends(verify_firebase_token),  # ACT-29: feedback só de médico autenticado
+):
+    """Feedback médico persistido no banco de dados para retroalimentação lexical. Requer Bearer token Firebase."""
     job = get_job(job_id)
     if not job:
         return {"error": "Not Found"}
