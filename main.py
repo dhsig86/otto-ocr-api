@@ -7,6 +7,9 @@ import uuid
 from pathlib import Path
 
 from middleware.require_auth import verify_firebase_token
+from pathlib import Path
+
+DEFAULT_ADMIN_TOKEN = uuid.uuid4().hex
 
 BASE_DIR = Path(__file__).parent
 
@@ -73,7 +76,7 @@ async def add_security_headers(request, call_next):
     # Permite iframe embed para o OTTO PWA
     if "X-Frame-Options" in response.headers:
         del response.headers["X-Frame-Options"]
-    response.headers["Content-Security-Policy"] = "frame-ancestors *"
+    response.headers["Content-Security-Policy"] = "frame-ancestors 'self' https://otto.drdariohart.com https://ottopwa.vercel.app https://ottos-plum.vercel.app"
     return response
 
 # ─── Frontend: servido pela rota raiz ──────────────────────────────────────
@@ -251,7 +254,7 @@ async def export_database(x_admin_token: str = Header(default=None)):
     Exporta o banco SQLite para download local antes de novos deploys.
     Protegido por token simples (header X-Admin-Token).
     """
-    admin_token = os.environ.get("ADMIN_TOKEN", "otto-ocr-admin")
+    admin_token = os.environ.get("ADMIN_TOKEN", DEFAULT_ADMIN_TOKEN)
     if x_admin_token != admin_token:
         raise HTTPException(status_code=401, detail="Token inválido")
     from core.database import DB_PATH
