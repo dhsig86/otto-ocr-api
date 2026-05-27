@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field
 
 # Carrega a knowledge base de léxico clínico
 _KB_PATH = Path(__file__).parent.parent / "knowledge" / "lexical_kb.json"
+_SUPPLEMENT_PATH = Path(__file__).parent.parent / "knowledge" / "orl_lexicon_supplement.json"
 
 def _load_kb() -> dict:
     if _KB_PATH.exists():
@@ -14,6 +15,7 @@ def _load_kb() -> dict:
     return {}
 
 _LEXICAL_KB = _load_kb()
+_ORL_SUPPLEMENT = json.loads(_SUPPLEMENT_PATH.read_text(encoding="utf-8")) if _SUPPLEMENT_PATH.exists() else {}
 
 
 class GPTAnalysisResult(BaseModel):
@@ -95,6 +97,15 @@ def _build_lexical_block(exam_type: str) -> str:
         linhas.append("\nDIAGNÓSTICOS COMPOSTOS (aplicar quando a combinação de achados estiver presente):")
         for d in diags:
             linhas.append(f'  - {d["condicao"]} → {d["diagnostico"]}')
+
+    # Suplemento ORL: condições clínicas relevantes para o tipo de exame
+    supp = _ORL_SUPPLEMENT.get(exam_type, {}).get("condicoes_orl", [])
+    if supp:
+        linhas.append("\nCONDIÇÕES CLÍNICAS ORL DE REFERÊNCIA (para correlação diagnóstica):")
+        for c in supp:
+            cids = ", ".join(c.get("cid10", []))
+            achados = "; ".join(c.get("achados_chave", [])[:3])
+            linhas.append(f'  - {c["nome"]} ({cids}): {achados}')
 
     return "\n".join(linhas)
 

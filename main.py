@@ -120,22 +120,23 @@ async def process_job(job_id: str, file_bytes: bytes, filename: str):
         is_raster = False
 
         # Etapa 1: Extração de Texto
+        import asyncio
         if filename.lower().endswith(".pdf"):
-            text, is_raster = extractor.process(file_bytes, filename)
+            text, is_raster = await asyncio.to_thread(extractor.process, file_bytes, filename)
             if is_raster:
                 update_job(job_id, status="processing", message="PDF escaneado detectado. Iniciando motor OCR...")
-                text = ocr_engine.extract_from_pdf_bytes(file_bytes)
+                text = await asyncio.to_thread(ocr_engine.extract_from_pdf_bytes, file_bytes)
         else:
             is_raster = True
             update_job(job_id, status="processing", message="Imagem detectada. Iniciando motor OCR...")
-            text = ocr_engine.extract_from_image_bytes(file_bytes)
+            text = await asyncio.to_thread(ocr_engine.extract_from_image_bytes, file_bytes)
 
         # Etapa 2: LGPD — extrair data ANTES de descartar o cabeçalho
         update_job(job_id, status="processing", message="Aplicando protocolo LGPD...")
-        safe_body, header_raw = extract_and_strip_header(text)
-        exam_date = extract_exam_date(header_raw, safe_body)  # data é metadado clínico, não PII
-        patient_token = generate_patient_token(header_raw)
-        safe_body = strip_pii_from_text(safe_body)
+        safe_body, header_raw = await asyncio.to_thread(extract_and_strip_header, text)
+        exam_date = await asyncio.to_thread(extract_exam_date, header_raw, safe_body)  # data é metadado clínico, não PII
+        patient_token = await asyncio.to_thread(generate_patient_token, header_raw)
+        safe_body = await asyncio.to_thread(strip_pii_from_text, safe_body)
 
         # Guarda de Confiança
         MIN_CHARS = 80
@@ -154,19 +155,19 @@ async def process_job(job_id: str, file_bytes: bytes, filename: str):
                 "entities_found": {},
                 "clinical_interpretation": None,
                 "low_confidence": True
-            }
+              }
             update_job(job_id, status="low_confidence", message=msg,
                        result=result, patient_token=patient_token, exam_type="indefinido")
             return
 
         # Etapa 3: Classificação
-        exam_type = classifier.classify(safe_body)
-        exam_label = classifier.label(exam_type)
+        exam_type = await asyncio.to_thread(classifier.classify, safe_body)
+        exam_label = await asyncio.to_thread(classifier.label, exam_type)
         update_job(job_id, status="processing", message=f"Exame identificado: {exam_label}",
                    patient_token=patient_token, exam_type=exam_type)
 
         # Etapa 4: NLP
-        entities = nlp_parser.enrich_with_heuristics(safe_body, exam_type)
+        entities = await asyncio.to_thread(nlp_parser.enrich_with_heuristics, safe_body, exam_type)
 
         # Etapa 5: GPT
         update_job(job_id, status="processing", message=f"Enviando para análise clínica GPT ({exam_label})...")
