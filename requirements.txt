@@ -3,11 +3,9 @@ uvicorn
 python-multipart
 pydantic
 PyPDF2
-pdfminer.six
 pytesseract
 pdf2image
 openai
-spacy
 Pillow
 python-dotenv
 firebase-admin

@@ -9,7 +9,8 @@ from pathlib import Path
 from middleware.require_auth import verify_firebase_token
 from pathlib import Path
 
-DEFAULT_ADMIN_TOKEN = uuid.uuid4().hex
+# ADMIN_TOKEN: env var obrigatória para /ocr/db/export
+# Se não configurada, a rota retorna 503 (em vez de gerar random que muda a cada restart)
 
 BASE_DIR = Path(__file__).parent
 
@@ -27,8 +28,30 @@ init_db()
 app = FastAPI(
     title="OTTO OCR Service",
     description="Microserviço opcional de extração e interpretação de exames OTTO (Regra 9).",
-    version="3.0.0"
+    version="3.1.0"
 )
+
+# Política de retenção: limpa uploads com mais de 7 dias (LGPD)
+UPLOAD_RETENTION_DAYS = int(os.environ.get("UPLOAD_RETENTION_DAYS", "7"))
+
+@app.on_event("startup")
+async def cleanup_old_uploads():
+    """Remove arquivos de upload com mais de UPLOAD_RETENTION_DAYS dias."""
+    import time
+    upload_dir = BASE_DIR / "uploads"
+    if not upload_dir.exists():
+        return
+    cutoff = time.time() - (UPLOAD_RETENTION_DAYS * 86400)
+    removed = 0
+    for f in upload_dir.iterdir():
+        if f.is_file() and f.stat().st_mtime < cutoff:
+            try:
+                f.unlink()
+                removed += 1
+            except Exception:
+                pass
+    if removed:
+        print(f"[LGPD] Removidos {removed} uploads com mais de {UPLOAD_RETENTION_DAYS} dias.")
 
 # CORS: Adicionado dominio explicitamente para resolver Strict-Origin policy na request FormData
 app.add_middleware(
@@ -255,7 +278,9 @@ async def export_database(x_admin_token: str = Header(default=None)):
     Exporta o banco SQLite para download local antes de novos deploys.
     Protegido por token simples (header X-Admin-Token).
     """
-    admin_token = os.environ.get("ADMIN_TOKEN", DEFAULT_ADMIN_TOKEN)
+    admin_token = os.environ.get("ADMIN_TOKEN")
+    if not admin_token:
+        raise HTTPException(status_code=503, detail="ADMIN_TOKEN não configurado no servidor")
     if x_admin_token != admin_token:
         raise HTTPException(status_code=401, detail="Token inválido")
     from core.database import DB_PATH
@@ -269,4 +294,4 @@ async def export_database(x_admin_token: str = Header(default=None)):
 
 @app.get("/health")
 async def health_check():
-    return {"status": "ok", "service": "OTTO OCR microservice", "version": "3.0.0"}
+    return {"status": "ok", "service": "OTTO OCR microservice", "version": "3.1.0"}
