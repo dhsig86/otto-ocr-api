@@ -19,7 +19,7 @@ from services.ocr_engine import OCRBaseEngine
 from services.nlp_parser import NLPParser
 from services.gpt_bridge import GPTSummarizer
 from services.exam_classifier import ExamClassifier
-from core.security import strip_pii_from_text, extract_and_strip_header, generate_patient_token, extract_exam_date
+from core.security import strip_pii_from_text, extract_and_strip_header, generate_patient_token, extract_exam_date, extract_patient_data
 from core.database import init_db, create_job, update_job, get_job, save_validation, get_lexical_stats, update_validation_status
 
 # Inicializa o banco de dados SQLite na primeira execução
@@ -159,6 +159,7 @@ async def process_job(job_id: str, file_bytes: bytes, filename: str):
         safe_body, header_raw = await asyncio.to_thread(extract_and_strip_header, text)
         exam_date = await asyncio.to_thread(extract_exam_date, header_raw, safe_body)  # data é metadado clínico, não PII
         patient_token = await asyncio.to_thread(generate_patient_token, header_raw)
+        patient_data = await asyncio.to_thread(extract_patient_data, header_raw)
         safe_body = await asyncio.to_thread(strip_pii_from_text, safe_body)
 
         # Guarda de Confiança
@@ -170,6 +171,7 @@ async def process_job(job_id: str, file_bytes: bytes, filename: str):
             )
             result = {
                 "patient_token": patient_token,
+                "patient_data": patient_data,
                 "exam_type": "indefinido",
                 "exam_label": "Não Identificado — Qualidade Insuficiente",
                 "was_raster_engine_used": is_raster,
@@ -207,6 +209,7 @@ async def process_job(job_id: str, file_bytes: bytes, filename: str):
 
         result = {
             "patient_token": patient_token,
+            "patient_data": patient_data,
             "exam_date": exam_date,
             "exam_type": exam_type,
             "exam_label": exam_label,

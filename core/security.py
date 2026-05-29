@@ -60,6 +60,40 @@ def generate_patient_token(raw_header_text: str = "") -> str:
         return f"pt-{h}"
     return f"pt-{uuid.uuid4().hex[:12]}"
 
+
+def extract_patient_data(header_raw: str) -> dict:
+    """
+    Extrai nome e data de nascimento do cabeçalho bruto do laudo.
+    Dados usados para pré-preencher campos do PROCOD (laudos cirúrgicos).
+    Nunca persistidos — retornados apenas na sessão do job OCR.
+    """
+    nome = ""
+    data_nascimento = ""
+
+    if not header_raw:
+        return {"nome": nome, "data_nascimento": data_nascimento}
+
+    # Nome: "Paciente: João da Silva" ou "Nome: Maria dos Santos"
+    m_nome = re.search(
+        r'(?i)(?:paciente\.{0,3}|nome)[:\s]+([A-Za-zÀ-ÖØ-öø-ÿ \']+?)(?=\s{3,}|\t|data:|idade:|nasc|rg:|cpf:|sexo:|\n|$|\r)',
+        header_raw
+    )
+    if m_nome:
+        raw_nome = m_nome.group(1).strip()
+        # Filtro de qualidade: nome deve ter pelo menos 2 palavras e < 80 chars
+        if len(raw_nome) >= 3 and len(raw_nome) < 80 and " " in raw_nome:
+            nome = raw_nome
+
+    # Data nascimento: "Nascimento: 15/03/1990" ou "D.N.: 15/03/1990" ou "Data Nasc.: ..."
+    m_dn = re.search(
+        r'(?i)(?:nascimento|d\.?\s*n\.?|data\s+nasc\.?)[:\s]+(\d{1,2}[/\-\.]\d{1,2}[/\-\.]\d{2,4})',
+        header_raw
+    )
+    if m_dn:
+        data_nascimento = _normalize_date(m_dn.group(1))
+
+    return {"nome": nome, "data_nascimento": data_nascimento}
+
 def extract_and_strip_header(raw_text: str) -> tuple[str, str]:
     """
     Extrai e remove o bloco de cabeçalho (dados do paciente) do texto do laudo.
