@@ -1,6 +1,6 @@
 import io
 import pytesseract
-from PIL import Image, ImageEnhance, ImageFilter
+from PIL import Image, ImageEnhance, ImageFilter, ImageOps
 from pdf2image import convert_from_bytes
 
 MIN_TEXT_CHARS = 80   # Mínimo de caracteres para considerar OCR válido
@@ -8,6 +8,22 @@ _TESS_CONFIG = '--psm 3 --oem 1'
 
 
 class OCRBaseEngine:
+
+    @staticmethod
+    def _auto_orient(img: Image.Image) -> Image.Image:
+        """Corrige rotação EXIF de fotos de celular e faz upscale se muito pequena."""
+        # 1. Auto-rotation via EXIF (celulares gravam orientação nos metadados)
+        try:
+            img = ImageOps.exif_transpose(img)
+        except Exception:
+            pass
+        # 2. Upscale se resolução baixa (<1500px no maior eixo) — melhora OCR
+        max_dim = max(img.size)
+        if max_dim < 1500:
+            scale = 1500 / max_dim
+            new_size = (int(img.size[0] * scale), int(img.size[1] * scale))
+            img = img.resize(new_size, Image.LANCZOS)
+        return img
 
     def _ocr(self, img: Image.Image, dpi: str = "150") -> str:
         """Roda Tesseract com hint de DPI, retorna string."""
@@ -18,12 +34,14 @@ class OCRBaseEngine:
         """Estratégia 1: imagem original sem processamento + DPI 200.
         Melhor para screenshots e documentos digitais de boa qualidade."""
         img = Image.open(io.BytesIO(raw)).convert("RGB")
+        img = self._auto_orient(img)
         return self._ocr(img, dpi="200")
 
     def _strategy_enhanced(self, raw: bytes) -> str:
         """Estratégia 2: escala de cinza + contraste suave.
         Bom para PDFs escaneados e documentos com pouco contraste."""
-        img = Image.open(io.BytesIO(raw)).convert("L")
+        img = Image.open(io.BytesIO(raw))
+        img = self._auto_orient(img).convert("L")
         img = ImageEnhance.Contrast(img).enhance(1.8)
         img = img.filter(ImageFilter.SHARPEN)
         return self._ocr(img, dpi="200")
@@ -31,7 +49,8 @@ class OCRBaseEngine:
     def _strategy_binarize(self, raw: bytes) -> str:
         """Estratégia 3: binarização agressiva + super-nitidez.
         Melhor para fotos de celular com fundo texturizado ou baixa iluminação."""
-        img = Image.open(io.BytesIO(raw)).convert("L")
+        img = Image.open(io.BytesIO(raw))
+        img = self._auto_orient(img).convert("L")
         img = img.filter(ImageFilter.SHARPEN)
         img = img.filter(ImageFilter.SHARPEN)
         img = ImageEnhance.Contrast(img).enhance(2.5)
@@ -42,7 +61,8 @@ class OCRBaseEngine:
         """Estratégia 4: PSM 11 (Sparse text).
         Melhor para resgatar texto limpo em formulários com tabelas ou grades densas (ex: audiometrias),
         onde o Tesseract tentaria ler as colunas da grade e gerar alucinações."""
-        img = Image.open(io.BytesIO(raw)).convert("L")
+        img = Image.open(io.BytesIO(raw))
+        img = self._auto_orient(img).convert("L")
         img = ImageEnhance.Contrast(img).enhance(1.8)
         config = "--psm 11 --oem 1 --dpi 150"
         return pytesseract.image_to_string(img, lang="por", config=config)

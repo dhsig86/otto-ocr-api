@@ -15,43 +15,43 @@
       },
       {
         "termo": "concha bolhosa",
-        "variantes": ["corneto bolhoso", "concha media bolhosa", "pneumatização do corneto médio"],
+        "variantes": ["corneto bolhoso", "concha media bolhosa", "pneumatização do corneto médio", "concha média pneumatizada"],
         "peso": "ALTO",
         "significado": "Pneumatização do corneto médio — causa obstrução do meato médio e sinusite de repetição. Indicação cirúrgica frequente."
       },
       {
         "termo": "esporão ósseo do septo",
-        "variantes": ["esporão ósseo", "esporão septal", "esporão de base larga"],
+        "variantes": ["esporão ósseo", "esporão septal", "esporão de base larga", "crista óssea septal"],
         "peso": "ALTO",
         "significado": "Deformidade óssea do septo. Compressão do corneto médio ipsilateral → obstrução. Indicação de septoplastia."
       },
       {
         "termo": "nível líquido",
-        "variantes": ["nível hidroaéreo", "nivel liquido", "conteúdo líquido"],
+        "variantes": ["nível hidroaéreo", "nivel liquido", "conteúdo líquido", "nível hidro-aéreo"],
         "peso": "ALTO",
         "significado": "Sugere componente agudo sobreposto à sinusite crônica → diagnóstico de SINUSITE CRÔNICA AGUDIZADA."
       },
       {
         "termo": "obliteração dos óstios",
-        "variantes": ["obliteração dos ostios de drenagem", "ostios obliterados", "vias de drenagem obliteradas"],
+        "variantes": ["obliteração dos ostios de drenagem", "ostios obliterados", "vias de drenagem obliteradas", "óstio obliterado"],
         "peso": "ALTO",
         "significado": "Bloqueio das vias de drenagem sinusal — indica necessidade de FESS (cirurgia endoscópica funcional dos seios)."
       },
       {
         "termo": "espessamento mucoso",
-        "variantes": ["espessamento do revestimento mucoso", "espessamento da mucosa"],
+        "variantes": ["espessamento do revestimento mucoso", "espessamento da mucosa", "mucosa espessada", "espessamento mucoperiósteo"],
         "peso": "MÉDIO",
         "significado": "Sinal de inflamação crônica sinusal. Avaliar extensão e associação com obstrução."
       },
       {
         "termo": "cisto de retenção",
-        "variantes": ["cisto de retencao", "pequeno cisto", "pólipo"],
+        "variantes": ["cisto de retencao", "pequeno cisto", "pólipo", "cisto mucoso"],
         "peso": "MÉDIO",
         "significado": "Cisto mucoso ou pólipo — pode obstruir drenagem se volumoso. Acompanhar ou ressecar na FESS."
       },
       {
         "termo": "tonsilolito",
-        "variantes": ["tonsilolitos", "cálculo tonsilar", "calculo tonsilar"],
+        "variantes": ["tonsilolitos", "cálculo tonsilar", "calculo tonsilar", "calcificação amigdaliana"],
         "peso": "MÉDIO",
         "significado": "Cálcio nas tonsilas palatinas — associado à amigdalite de repetição e halitose. Avaliar tonsilectomia."
       },
@@ -63,9 +63,39 @@
       },
       {
         "termo": "desvio septal",
-        "variantes": ["desvio do septo nasal", "septo sinuoso", "septo desviado"],
+        "variantes": ["desvio do septo nasal", "septo sinuoso", "septo desviado", "septo nasal desviado"],
         "peso": "MÉDIO",
         "significado": "Desvio da linha média. Avaliar lado, grau e associação com esporão e obstrução nasal."
+      },
+      {
+        "termo": "velamento do seio",
+        "variantes": ["velamento total", "velamento parcial", "velamento do seio maxilar", "velamento do seio frontal", "opacificação do seio"],
+        "peso": "ALTO",
+        "significado": "Velamento completo ou parcial sugere sinusite aguda ou crônica. Avaliar extensão e lateralidade."
+      },
+      {
+        "termo": "complexo ostiomeatal",
+        "variantes": ["COM", "unidade ostiomeatal", "UOM", "via de drenagem do COM"],
+        "peso": "ALTO",
+        "significado": "Região-chave da drenagem sinusal. Obstrução do COM é a principal indicação de FESS."
+      },
+      {
+        "termo": "célula de Haller",
+        "variantes": ["célula infraorbitária", "celula de Haller", "célula etmoidal infraorbital"],
+        "peso": "MÉDIO",
+        "significado": "Célula etmoidal ectópica abaixo da órbita. Pode obstruir infundíbulo e COM."
+      },
+      {
+        "termo": "célula de Onodi",
+        "variantes": ["célula esfenoetmoidal", "celula de Onodi", "célula etmoidal posterior pneumatizada"],
+        "peso": "ALTO",
+        "significado": "Célula etmoidal posterior com relação íntima ao nervo óptico e artéria carótida. RISCO CIRÚRGICO elevado na FESS."
+      },
+      {
+        "termo": "processo uncinado",
+        "variantes": ["unciforme", "processo unciforme", "apófise unciforme"],
+        "peso": "MÉDIO",
+        "significado": "Lâmina óssea que delimita lateralmente o hiato semilunar. Sua ressecção (uncinectomia) é o 1º passo da FESS."
       }
     ],
     "diagnosticos_compostos": [
@@ -83,6 +113,150 @@
         "condicao": "curvatura_paradoxal + infundibulo_obliterado",
         "diagnostico": "Obstrução meato médio por variante anatômica + processo inflamatório",
         "justificativa": "Curvatura paradoxal piora obstrução quando associada à mucosidade no infundíbulo"
+      },
+      {
+        "condicao": "velamento_total + nivel_liquido",
+        "diagnostico": "Sinusite aguda",
+        "justificativa": "Velamento total com nível líquido sugere processo agudo supurativo"
+      }
+    ]
+  },
+  "tomografia_mastoide": {
+    "achados_discriminativos": [
+      {
+        "termo": "velamento de células mastoideas",
+        "variantes": ["velamento mastoideo", "opacificação das células da mastóide", "mastóide velada", "mastoide opacificada", "células mastóideas veladas"],
+        "peso": "ALTO",
+        "significado": "Velamento das células aéreas sugere mastoidite (aguda se associado a clínica, crônica se assintomático). Avaliar extensão e complicações."
+      },
+      {
+        "termo": "erosão do tegmen tympani",
+        "variantes": ["tegmen timpânico erodido", "erosão do tégmen", "solução de continuidade do tegmen", "falha no tegmen tympani"],
+        "peso": "ALTO",
+        "significado": "Erosão do teto da caixa timpânica — risco de fístula liquórica e complicação intracraniana. Indicação cirúrgica."
+      },
+      {
+        "termo": "colesteatoma",
+        "variantes": ["massa de partes moles", "lesão expansiva", "processo expansivo na orelha média", "colesteatoma adquirido", "pérola colesteatomatosa"],
+        "peso": "ALTO",
+        "significado": "Massa de partes moles na orelha média/mastóide com erosão óssea. BIÓPSIA/CIRURGIA mandatória. Avaliar extensão e complicações."
+      },
+      {
+        "termo": "erosão ossicular",
+        "variantes": ["destruição ossicular", "cadeia ossicular descontinuada", "lise ossicular", "erosão da bigorna", "erosão do martelo"],
+        "peso": "ALTO",
+        "significado": "Dano à cadeia ossicular (martelo, bigorna, estribo) com perda auditiva condutiva. Causa: colesteatoma ou otite crônica."
+      },
+      {
+        "termo": "mastóide ebúrnea",
+        "variantes": ["mastoide esclerótica", "mastóide compacta", "mastoide eburnea", "mastoide esclerosada"],
+        "peso": "MÉDIO",
+        "significado": "Mastóide sem pneumatização normal — sugere processo inflamatório crônico antigo ou hipopneumatização congênita."
+      },
+      {
+        "termo": "otite média crônica",
+        "variantes": ["OMC", "retração timpânica", "perfuração timpânica", "membrana timpânica retraída"],
+        "peso": "ALTO",
+        "significado": "Processo inflamatório crônico de orelha média. Classificar como simples (sem colesteatoma) ou colesteatomatosa."
+      },
+      {
+        "termo": "canal semicircular lateral",
+        "variantes": ["CSC lateral", "canal lateral", "fístula do canal lateral", "erosão do canal semicircular"],
+        "peso": "ALTO",
+        "significado": "Erosão do canal semicircular lateral por colesteatoma → fístula labiríntica. Risco de vertigem severa e surdez."
+      },
+      {
+        "termo": "dehiscência do canal de Falópio",
+        "variantes": ["dehiscência do nervo facial", "exposição do nervo facial", "canal de Falópio deiscente", "deiscência do facial"],
+        "peso": "ALTO",
+        "significado": "Exposição do nervo facial — RISCO CIRÚRGICO máximo. Mapear cuidadosamente antes de mastoidectomia."
+      },
+      {
+        "termo": "pneumatização preservada",
+        "variantes": ["mastóide bem pneumatizada", "mastoide pneumatizada", "células aéreas normais"],
+        "peso": "BAIXO",
+        "significado": "Achado normal. Mastóide com aeração preservada, sem sinais de processo inflamatório."
+      }
+    ],
+    "diagnosticos_compostos": [
+      {
+        "condicao": "colesteatoma + erosao_ossicular",
+        "diagnostico": "Otite média crônica colesteatomatosa com destruição ossicular",
+        "justificativa": "Colesteatoma ativo com lise de cadeia — indicação de timpanomastoidectomia"
+      },
+      {
+        "condicao": "velamento_mastoideo + erosao_tegmen",
+        "diagnostico": "Mastoidite complicada com risco intracraniano",
+        "justificativa": "Velamento extenso + erosão de tegmen → risco de abscesso epidural ou meningite otogênica"
+      },
+      {
+        "condicao": "colesteatoma + fistula_canal_lateral",
+        "diagnostico": "Colesteatoma com fístula labiríntica",
+        "justificativa": "Erosão do canal semicircular lateral — vertigem + risco de surdez definitiva"
+      }
+    ]
+  },
+  "tomografia_pescoco": {
+    "achados_discriminativos": [
+      {
+        "termo": "linfonodomegalia",
+        "variantes": ["linfonodo aumentado", "adenopatia cervical", "linfonodomegalia cervical", "linfonodo reacional", "gânglio aumentado"],
+        "peso": "ALTO",
+        "significado": "Linfonodo cervical aumentado. Avaliar: tamanho (>1.5cm jugulodigástrico, >1cm outros), necrose central, forma (redondo vs oval), e nível cervical."
+      },
+      {
+        "termo": "necrose central",
+        "variantes": ["centro necrótico", "hipodensidade central", "linfonodo com necrose", "área de necrose"],
+        "peso": "ALTO",
+        "significado": "Linfonodo com necrose central — altamente suspeito para metástase linfonodal de carcinoma escamoso (orofaringe, laringe, hipofaringe)."
+      },
+      {
+        "termo": "massa na tireoide",
+        "variantes": ["nódulo tireoidiano", "nódulo na tireoide", "massa em lobo tireoidiano", "lesão tireoidiana"],
+        "peso": "ALTO",
+        "significado": "Nódulo/massa tireoidiana — avaliar TI-RADS se US, ou PAAF guiada. Investigar paralisia de prega vocal associada."
+      },
+      {
+        "termo": "massa na parótida",
+        "variantes": ["nódulo parotídeo", "lesão na parótida", "massa na glândula parótida", "tumor de parótida"],
+        "peso": "ALTO",
+        "significado": "Massa parotídea — investigar relação com nervo facial. PAAF + ressonância antes de cirurgia."
+      },
+      {
+        "termo": "massa na submandibular",
+        "variantes": ["nódulo submandibular", "massa na glândula submandibular", "sialolitíase", "cálculo na submandibular"],
+        "peso": "ALTO",
+        "significado": "Massa ou cálculo na submandibular. Se cálculo: sialolitíase com indicação de remoção ou sialoendoscopia."
+      },
+      {
+        "termo": "cisto branquial",
+        "variantes": ["cisto de fenda branquial", "cisto cervical lateral", "cisto da 2ª fenda branquial"],
+        "peso": "MÉDIO",
+        "significado": "Massa cística cervical lateral benigna — geralmente em adultos jovens. Indicação de exérese cirúrgica."
+      },
+      {
+        "termo": "cisto do ducto tireoglosso",
+        "variantes": ["cisto tireoglosso", "massa na linha média cervical", "nódulo supra-hioideo linha média"],
+        "peso": "MÉDIO",
+        "significado": "Massa cística na linha média cervical. Procedimento de Sistrunk (exérese + corpo do hióide) é gold standard."
+      },
+      {
+        "termo": "invasão do espaço parafaríngeo",
+        "variantes": ["lesão parafaríngea", "massa no espaço parafaríngeo", "extensão parafaríngea"],
+        "peso": "ALTO",
+        "significado": "Massa invadindo espaço parafaríngeo — avaliar relação com carótida, jugular interna e nervos cranianos IX-XII."
+      }
+    ],
+    "diagnosticos_compostos": [
+      {
+        "condicao": "linfonodomegalia + necrose_central",
+        "diagnostico": "Metástase linfonodal cervical suspeita",
+        "justificativa": "Linfonodo com necrose central até prova em contrário é metástase de CEC. Investigar sítio primário (orofaringe, laringe, hipofaringe, nasofaringe)."
+      },
+      {
+        "condicao": "massa_parótida + paralisia_facial",
+        "diagnostico": "Tumor maligno de parótida com invasão do nervo facial",
+        "justificativa": "Paralisia facial associada a massa parotídea indica malignidade até prova em contrário."
       }
     ]
   },
@@ -90,27 +264,81 @@
     "achados_discriminativos": [
       {
         "termo": "gap osteoacústico",
-        "variantes": ["gap osseoaéreo", "gap aéreo-ósseo", "diferença via aérea via óssea"],
+        "variantes": ["gap osseoaéreo", "gap aéreo-ósseo", "diferença via aérea via óssea", "gap aéreo-ósseo", "diferença aéreo-óssea"],
         "peso": "ALTO",
         "significado": "Gap > 15 dB sugere componente condutivo (otite média, otosclerose, disrupção ossicular)."
       },
       {
         "termo": "entalhe de 4kHz",
-        "variantes": ["entalhe em 4000 Hz", "queda em 4kHz", "perda em 4kHz"],
+        "variantes": ["entalhe em 4000 Hz", "queda em 4kHz", "perda em 4kHz", "entalhe acústico"],
         "peso": "ALTO",
         "significado": "Padrão clássico de perda auditiva por ruído (PAINPSE). Bilateral assimétrica é hallmark."
       },
       {
         "termo": "curva descendente",
-        "variantes": ["perda nas altas frequências", "queda progressiva nas altas"],
+        "variantes": ["perda nas altas frequências", "queda progressiva nas altas", "curva em rampa", "perda descendente"],
         "peso": "MÉDIO",
         "significado": "Perda neurossensorial típica do envelhecimento (presbiacusia) ou exposição a ruído."
       },
       {
         "termo": "anacusia",
-        "variantes": ["perda total", "surdez profunda"],
+        "variantes": ["perda total", "surdez profunda", "cofose"],
         "peso": "ALTO",
         "significado": "Limiar > 90 dB — avaliar indicação de implante coclear."
+      },
+      {
+        "termo": "curva ascendente",
+        "variantes": ["perda nas baixas frequências", "queda nas baixas", "perda nas frequências graves", "curva em U invertido"],
+        "peso": "ALTO",
+        "significado": "Perda nas frequências graves sugere: hidrops endolinfático (Ménière), otosclerose incipiente, ou otite secretora."
+      },
+      {
+        "termo": "curva plana",
+        "variantes": ["perda plana", "audiograma plano", "perda horizontal", "curva reta"],
+        "peso": "MÉDIO",
+        "significado": "Limiares uniformemente rebaixados em todas as frequências. Sugere perda hereditária, ototoxicidade ou causa mista."
+      },
+      {
+        "termo": "SRT",
+        "variantes": ["limiar de reconhecimento de fala", "speech reception threshold", "limiar de recepção de fala"],
+        "peso": "MÉDIO",
+        "significado": "Limiar de Recepção de Fala — deve estar compatível com a média tonal (500, 1k, 2k Hz). Discrepância sugere simulação."
+      },
+      {
+        "termo": "IPRF",
+        "variantes": ["índice de reconhecimento de fala", "IRF", "discriminação de fala", "índice percentual de reconhecimento de fala"],
+        "peso": "ALTO",
+        "significado": "IPRF < 60% sugere comprometimento retrococlear ou neuropatia auditiva. Valor prognóstico para reabilitação."
+      },
+      {
+        "termo": "perda condutiva",
+        "variantes": ["hipoacusia condutiva", "perda de condução", "surdez condutiva"],
+        "peso": "ALTO",
+        "significado": "Via aérea alterada + via óssea normal. Causas: otite, otosclerose, perfuração timpânica, cadeia ossicular."
+      },
+      {
+        "termo": "perda neurossensorial",
+        "variantes": ["hipoacusia neurossensorial", "perda sensorioneural", "perda sensório-neural", "SNS", "surdez sensorioneural"],
+        "peso": "ALTO",
+        "significado": "Via aérea e óssea alteradas sem gap significativo. Causas: presbiacusia, PAIR, ototoxicidade, Ménière."
+      },
+      {
+        "termo": "perda mista",
+        "variantes": ["hipoacusia mista", "componente misto", "perda condutiva e sensorioneural"],
+        "peso": "ALTO",
+        "significado": "Gap aéreo-ósseo + rebaixamento de via óssea. Causas: otosclerose avançada, otite crônica com PAIR."
+      },
+      {
+        "termo": "audição normal",
+        "variantes": ["limiares normais", "audiometria normal", "limiares dentro da normalidade", "audição preservada"],
+        "peso": "BAIXO",
+        "significado": "Limiares ≤ 25 dB em todas as frequências. Audição dentro dos padrões de normalidade."
+      },
+      {
+        "termo": "entalhe de Carhart",
+        "variantes": ["entalhe em 2kHz na via óssea", "Carhart notch", "queda em 2000 Hz via óssea"],
+        "peso": "ALTO",
+        "significado": "Rebaixamento seletivo em 2 kHz na via óssea — sinal clássico de otosclerose estapediana."
       }
     ]
   },
@@ -118,15 +346,33 @@
     "achados_discriminativos": [
       {
         "termo": "latência aumentada da onda V",
-        "variantes": ["aumento da latência V", "latência V prolongada"],
+        "variantes": ["aumento da latência V", "latência V prolongada", "onda V com latência elevada"],
         "peso": "ALTO",
         "significado": "Sugere disfunção retrococlear (neurinoma do acústico, doença desmielinizante)."
       },
       {
         "termo": "intervalo interpico I-V",
-        "variantes": ["diferença I-V", "IPL I-V"],
+        "variantes": ["diferença I-V", "IPL I-V", "intervalo I-V"],
         "peso": "ALTO",
         "significado": "IPL I-V > 4.4ms = alteração de condução do tronco encefálico auditivo."
+      },
+      {
+        "termo": "onda I ausente",
+        "variantes": ["ausência de onda I", "onda I não identificada", "sem onda I"],
+        "peso": "ALTO",
+        "significado": "Sugere perda coclear severa ou neuropatia auditiva. Avaliar com emissões otoacústicas."
+      },
+      {
+        "termo": "limiar eletrofisiológico",
+        "variantes": ["limiar do BERA", "menor intensidade com onda V", "threshold auditivo"],
+        "peso": "ALTO",
+        "significado": "Última intensidade com onda V identificável. Usado em neonatos e pacientes que não colaboram com audiometria convencional."
+      },
+      {
+        "termo": "reprodutibilidade",
+        "variantes": ["replicabilidade", "traçado reprodutível", "ondas reprodutíveis"],
+        "peso": "MÉDIO",
+        "significado": "Qualidade técnica do exame. Ondas reprodutíveis = resultado confiável."
       }
     ]
   },
@@ -134,21 +380,39 @@
     "achados_discriminativos": [
       {
         "termo": "paresia de prega vocal",
-        "variantes": ["paralisia de corda vocal", "paralisia de prega vocal", "imobilidade de corda vocal"],
+        "variantes": ["paralisia de corda vocal", "paralisia de prega vocal", "imobilidade de corda vocal", "hipomobilidade de prega vocal"],
         "peso": "ALTO",
         "significado": "Avaliar etiologia neurológica (nervo recorrente laríngeo). Investigar tireoide, pulmão, mediastino."
       },
       {
         "termo": "edema de Reinke",
-        "variantes": ["edema subepitelial", "degeneração gelatinosa"],
+        "variantes": ["edema subepitelial", "degeneração gelatinosa", "pseudomixoma de prega vocal"],
         "peso": "ALTO",
         "significado": "Associado fortemente ao tabagismo. Bilateral. Tratamento: cessação do tabaco + microcirurgia."
       },
       {
         "termo": "leucoplasia",
-        "variantes": ["lesão branca de prega vocal", "placa branca laríngea"],
+        "variantes": ["lesão branca de prega vocal", "placa branca laríngea", "queratose laríngea"],
         "peso": "ALTO",
         "significado": "BIÓPSIA obrigatória — descartado carcinoma in situ ou invasivo."
+      },
+      {
+        "termo": "nódulo vocal",
+        "variantes": ["nódulos de pregas vocais", "nódulos bilaterais", "kissing nodules"],
+        "peso": "ALTO",
+        "significado": "Lesões bilaterais no terço médio das pregas vocais. Causa funcional (abuso vocal). Fonoterapia como 1ª linha."
+      },
+      {
+        "termo": "pólipo vocal",
+        "variantes": ["pólipo de prega vocal", "massa pediculada", "pólipo sessil"],
+        "peso": "ALTO",
+        "significado": "Lesão unilateral, geralmente hemorrágica. Indicação de microcirurgia laríngea."
+      },
+      {
+        "termo": "sulco vocal",
+        "variantes": ["sulcus vocalis", "vergeture", "estria de mucosa"],
+        "peso": "MÉDIO",
+        "significado": "Depressão longitudinal na mucosa da prega vocal. Causa disfonia por incapacidade de onda mucosa. Difícil tratamento."
       }
     ]
   },
@@ -156,15 +420,33 @@
     "achados_discriminativos": [
       {
         "termo": "hipertrofia de adenoide",
-        "variantes": ["hipertrofia adenoideana", "vegetações adenoides volumosas"],
+        "variantes": ["hipertrofia adenoideana", "vegetações adenoides volumosas", "adenoide obstrutiva", "hipertrofia de tonsila faríngea"],
         "peso": "ALTO",
         "significado": "Graus III-IV com obstrução de coana → indicação de adenoidectomia."
       },
       {
         "termo": "pólipo nasal",
-        "variantes": ["polipose nasal", "pólipo em meato médio"],
+        "variantes": ["polipose nasal", "pólipo em meato médio", "polipose difusa", "RSCcPN"],
         "peso": "ALTO",
         "significado": "Massa inflamatória — avaliar extensão e associação com asma/AINE-hipersensibilidade (tríade de Samter)."
+      },
+      {
+        "termo": "hipertrofia de corneto inferior",
+        "variantes": ["corneto inferior hipertrofiado", "hipertrofia de concha inferior", "hipertrofia turbinal", "cornetos hipertrofiados"],
+        "peso": "MÉDIO",
+        "significado": "Aumento do corneto inferior — causa obstrução nasal. Avaliar rinite alérgica e indicação de turbinoplastia."
+      },
+      {
+        "termo": "secreção purulenta",
+        "variantes": ["secreção mucopurulenta", "drenagem purulenta", "pus em meato médio", "secreção amarelo-esverdeada"],
+        "peso": "ALTO",
+        "significado": "Drenagem purulenta em meato médio sugere sinusite bacteriana aguda. Avaliar antibioticoterapia."
+      },
+      {
+        "termo": "desvio de septo nasal",
+        "variantes": ["DNS", "septo desviado", "desvio septal anterior", "crista septal"],
+        "peso": "MÉDIO",
+        "significado": "Desvio visualizado ao endoscópio. Avaliar grau de obstrução e indicação de septoplastia."
       }
     ]
   },
@@ -220,7 +502,7 @@
       },
       {
         "termo": "dessaturação da oxi-hemoglobina",
-        "variantes": ["dessaturação", "saturação mínima < 90%", "saturação baixa"],
+        "variantes": ["dessaturação", "saturação mínima < 90%", "saturação baixa", "SpO2 mínima"],
         "peso": "ALTO",
         "significado": "Quedas na oxigenação sanguínea ligadas aos eventos respiratórios. Indica gravidade fisiológica da apneia."
       },
