@@ -7,172 +7,1047 @@
   "tomografia": {
     "condicoes_orl": [
       {
-        "nome": "Rinossinusite Aguda Bacteriana",
-        "cid10": ["J01.0", "J01.1", "J01.2", "J01.3", "J01.4", "J01.9"],
-        "achados_chave": ["nível hidroaéreo sinusal", "velamento sinusal unilateral", "espessamento mucoso com rinorreia purulenta"],
-        "red_flags": ["cefaleia intensa", "edema periorbital", "alterações visuais", "sinais meníngeos"]
-      },
-      {
-        "nome": "Rinossinusite Crônica",
-        "cid10": ["J32.0", "J32.1", "J32.2", "J32.3", "J32.4", "J32.8", "J32.9"],
-        "achados_chave": ["espessamento mucoso crônico", "obliteração do complexo ostiomeatal", "opacificação sinusal bilateral"],
-        "red_flags": ["sintomas unilaterais", "epistaxe recorrente unilateral", "déficit de nervo craniano"]
-      },
-      {
-        "nome": "Polipose Nasal",
-        "cid10": ["J33.0", "J33.1", "J33.8", "J33.9"],
-        "achados_chave": ["opacificação bilateral de etmoides e maxilares", "alargamento do infundíbulo etmoidal", "remodelamento ósseo"],
-        "red_flags": ["pólipo unilateral (excluir papiloma invertido/neoplasia)", "epistaxe", "proptose"]
-      },
-      {
-        "nome": "Tumor Nasossinusal",
-        "cid10": ["C30.0", "C31.0", "C31.1", "C31.2", "D14.0"],
-        "achados_chave": ["massa com destruição óssea", "lesão unilateral expansiva", "invasão orbitária ou de base de crânio"],
-        "red_flags": ["sintomas unilaterais progressivos", "epistaxe recorrente", "paralisia de nervo craniano"]
-      },
-      {
-        "nome": "Mucocele Sinusal",
-        "cid10": ["J34.1"],
-        "achados_chave": ["lesão expansiva sinusal homogênea", "remodelamento ósseo sem destruição", "abaulamento de parede sinusal"],
-        "red_flags": ["proptose", "diplopia", "sinais de infecção intracraniana"]
-      },
-      {
-        "nome": "Desvio de Septo Nasal",
-        "cid10": ["J34.2"],
-        "achados_chave": ["desvio septal com contato com corneto", "esporão ósseo septal", "obstrução de meato ipsilateral"],
+        "nome": "Rinite Alérgica",
+        "cid10": [
+          "J30.1",
+          "J30.2",
+          "J30.3",
+          "J30.4"
+        ],
+        "achados_chave": [
+          "Obstrução nasal",
+          "rinorreia aquosa",
+          "espirros em salva"
+        ],
         "red_flags": []
       },
       {
+        "nome": "Rinite Vasomotora",
+        "cid10": [
+          "J30.0"
+        ],
+        "achados_chave": [
+          "Obstrução nasal alternante",
+          "rinorreia aquosa",
+          "gotejamento pós-nasal"
+        ],
+        "red_flags": []
+      },
+      {
+        "nome": "Rinite Medicamentosa",
+        "cid10": [
+          "J30.8"
+        ],
+        "achados_chave": [
+          "Obstrução nasal progressiva",
+          "dependência de descongestionante",
+          "congestão de rebote"
+        ],
+        "red_flags": []
+      },
+      {
+        "nome": "IVAS / Resfriado Comum",
+        "cid10": [
+          "J00",
+          "J06.9"
+        ],
+        "achados_chave": [
+          "Congestão nasal",
+          "rinorreia",
+          "espirros"
+        ],
+        "red_flags": [
+          "Febre >38.5°C por >3 dias",
+          "sintomas >10 dias sem melhora",
+          "piora após melhora inicial"
+        ]
+      },
+      {
+        "nome": "Gripe (Influenza)",
+        "cid10": [
+          "J10.1",
+          "J11.1"
+        ],
+        "achados_chave": [
+          "Febre alta",
+          "calafrios",
+          "mialgia"
+        ],
+        "red_flags": [
+          "Dispneia",
+          "dor torácica",
+          "confusão mental",
+          "vômitos persistentes"
+        ]
+      },
+      {
+        "nome": "Rinossinusite Aguda Bacteriana",
+        "cid10": [
+          "J01.0",
+          "J01.1",
+          "J01.2",
+          "J01.3",
+          "J01.4",
+          "J01.8",
+          "J01.9"
+        ],
+        "achados_chave": [
+          "Rinorreia purulenta",
+          "obstrução nasal",
+          "dor/pressão facial"
+        ],
+        "red_flags": [
+          "Cefaleia intensa",
+          "edema periorbital",
+          "alterações visuais",
+          "sinais meníngeos"
+        ]
+      },
+      {
+        "nome": "Rinossinusite Crônica",
+        "cid10": [
+          "J32.0",
+          "J32.1",
+          "J32.2",
+          "J32.3",
+          "J32.4",
+          "J32.8",
+          "J32.9"
+        ],
+        "achados_chave": [
+          "Obstrução nasal crônica",
+          "rinorreia anterior/posterior",
+          "dor/pressão facial"
+        ],
+        "red_flags": [
+          "Sintomas unilaterais",
+          "epistaxe recorrente unilateral",
+          "déficit de nervo craniano"
+        ]
+      },
+      {
+        "nome": "Polipose Nasal",
+        "cid10": [
+          "J33.0",
+          "J33.1",
+          "J33.8",
+          "J33.9"
+        ],
+        "achados_chave": [
+          "Obstrução nasal progressiva bilateral",
+          "anosmia/hiposmia",
+          "rinorreia"
+        ],
+        "red_flags": [
+          "Pólipo unilateral (excluir papiloma invertido/neoplasia)",
+          "epistaxe",
+          "proptose"
+        ]
+      },
+      {
+        "nome": "Desvio de Septo Nasal",
+        "cid10": [
+          "J34.2"
+        ],
+        "achados_chave": [
+          "Obstrução nasal unilateral predominante",
+          "respiração oral",
+          "ronco"
+        ],
+        "red_flags": []
+      },
+      {
+        "nome": "Epistaxe",
+        "cid10": [
+          "R04.0"
+        ],
+        "achados_chave": [
+          "Sangramento ativo por uma ou ambas narinas",
+          "sangue na orofaringe (posterior)",
+          "náuseas por sangue deglutido"
+        ],
+        "red_flags": [
+          "Epistaxe posterior volumosa",
+          "uso de anticoagulantes",
+          "coagulopatia",
+          "recorrência frequente unilateral"
+        ]
+      },
+      {
+        "nome": "Corpo Estranho Nasal",
+        "cid10": [
+          "T17.1"
+        ],
+        "achados_chave": [
+          "Obstrução nasal unilateral",
+          "rinorreia purulenta fétida unilateral",
+          "epistaxe"
+        ],
+        "red_flags": [
+          "Pilha-botão (risco de necrose septal)",
+          "corpo estranho posterior com risco de aspiração"
+        ]
+      },
+      {
+        "nome": "Hipertrofia de Adenoides",
+        "cid10": [
+          "J35.2",
+          "J35.3"
+        ],
+        "achados_chave": [
+          "Obstrução nasal crônica",
+          "respiração oral",
+          "ronco"
+        ],
+        "red_flags": [
+          "Apneia obstrutiva do sono",
+          "cor pulmonale"
+        ]
+      },
+      {
+        "nome": "Fístula Liquórica Nasal",
+        "cid10": [
+          "G96.0"
+        ],
+        "achados_chave": [
+          "Rinorreia aquosa clara unilateral",
+          "gotejamento postural",
+          "cefaleia ortostática"
+        ],
+        "red_flags": [
+          "Meningite recorrente",
+          "pós-trauma craniano",
+          "pós-cirurgia endoscópica"
+        ]
+      },
+      {
+        "nome": "Tumor Nasossinusal",
+        "cid10": [
+          "C30.0",
+          "C31.0",
+          "C31.1",
+          "C31.2",
+          "C31.3",
+          "D14.0"
+        ],
+        "achados_chave": [
+          "Obstrução nasal unilateral progressiva",
+          "epistaxe unilateral recorrente",
+          "dor facial"
+        ],
+        "red_flags": [
+          "Sintomas unilaterais progressivos",
+          "epistaxe recorrente",
+          "paralisia de nervo craniano",
+          "proptose"
+        ]
+      },
+      {
+        "nome": "Atresia Coanal",
+        "cid10": [
+          "Q30.0"
+        ],
+        "achados_chave": [
+          "Cianose cíclica no neonato (piora ao mamar, melhora ao chorar)",
+          "obstrução nasal unilateral (se unilateral)",
+          "impossibilidade de passar sonda nasal"
+        ],
+        "red_flags": [
+          "Bilateral em neonato: emergência respiratória",
+          "associação CHARGE"
+        ]
+      },
+      {
+        "nome": "Mucocele Sinusal",
+        "cid10": [
+          "J34.1"
+        ],
+        "achados_chave": [
+          "Dor/pressão facial progressiva",
+          "proptose (se etmoidal/frontal)",
+          "diplopia"
+        ],
+        "red_flags": [
+          "Proptose",
+          "diplopia",
+          "sinais de infecção intracraniana"
+        ]
+      },
+      {
         "nome": "Rinossinusite Fúngica",
-        "cid10": ["B49", "J32.9", "B46.0"],
-        "achados_chave": ["hiperdensidade intrassinusal (calcificações)", "opacificação unilateral expansiva", "erosão óssea (forma invasiva)"],
-        "red_flags": ["imunodeprimido com sintomas nasais", "necrose de mucosa", "proptose"]
+        "cid10": [
+          "B49",
+          "J32.9",
+          "B46.0"
+        ],
+        "achados_chave": [
+          "Obstrução nasal crônica",
+          "rinorreia espessa",
+          "dor facial"
+        ],
+        "red_flags": [
+          "Imunodeprimido com sintomas nasais",
+          "necrose de mucosa",
+          "proptose",
+          "paralisia de nervo craniano"
+        ]
       }
     ]
   },
   "audiometria": {
     "condicoes_orl": [
       {
-        "nome": "Presbiacusia",
-        "cid10": ["H91.1"],
-        "achados_chave": ["perda neurossensorial bilateral simétrica em agudos", "curva descendente", "discriminação vocal reduzida"],
-        "red_flags": ["assimetria significativa (excluir schwannoma vestibular)"]
+        "nome": "Otite Média Aguda",
+        "cid10": [
+          "H66.0",
+          "H66.9"
+        ],
+        "achados_chave": [
+          "Otalgia intensa",
+          "febre",
+          "irritabilidade (lactentes)"
+        ],
+        "red_flags": [
+          "Mastoidite (edema retroauricular)",
+          "paralisia facial",
+          "sinais meníngeos"
+        ]
       },
       {
-        "nome": "PAIR (Perda Auditiva Induzida por Ruído)",
-        "cid10": ["H83.3"],
-        "achados_chave": ["entalhe em 4 kHz bilateral", "perda neurossensorial em agudos", "via óssea e aérea rebaixadas"],
-        "red_flags": ["assimetria significativa", "progressão após afastamento do ruído"]
+        "nome": "Otite Externa Difusa",
+        "cid10": [
+          "H60.3"
+        ],
+        "achados_chave": [
+          "Otalgia intensa (piora ao puxar pavilhão/tragus)",
+          "prurido",
+          "otorreia"
+        ],
+        "red_flags": [
+          "Celulite periauricular",
+          "granulação em assoalho de conduto (necrotizante)",
+          "diabetes + otalgia intensa"
+        ]
       },
       {
-        "nome": "Otosclerose",
-        "cid10": ["H80.0", "H80.1", "H80.2", "H80.9"],
-        "achados_chave": ["gap osteoacústico bilateral", "entalhe de Carhart em 2 kHz", "perda condutiva progressiva"],
-        "red_flags": ["componente neurossensorial progressivo (otosclerose coclear)"]
+        "nome": "Otite Externa Necrotizante (Maligna)",
+        "cid10": [
+          "H60.2"
+        ],
+        "achados_chave": [
+          "Otalgia desproporcional e refratária",
+          "otorreia purulenta persistente",
+          "granulação em assoalho de conduto"
+        ],
+        "red_flags": [
+          "Paralisia de nervos cranianos (VII, IX, X, XI, XII)",
+          "diabetes descompensado",
+          "trombose de seio sigmoide"
+        ]
       },
       {
-        "nome": "Otite Média Secretora",
-        "cid10": ["H65.0", "H65.1", "H65.2", "H65.3", "H65.9"],
-        "achados_chave": ["perda condutiva leve a moderada", "curva timpanométrica tipo B", "gap aéreo-ósseo em graves e médios"],
-        "red_flags": ["unilateral em adulto (excluir neoplasia de nasofaringe)"]
-      },
-      {
-        "nome": "Surdez Súbita (SSNHL)",
-        "cid10": ["H91.2"],
-        "achados_chave": ["perda neurossensorial unilateral ≥30 dB em 3 frequências", "instalação em <72h", "via óssea rebaixada ipsilateral"],
-        "red_flags": ["EMERGÊNCIA OTOLÓGICA: tratamento em até 14 dias", "excluir schwannoma vestibular com RM"]
-      },
-      {
-        "nome": "Cerume Impactado",
-        "cid10": ["H61.2"],
-        "achados_chave": ["perda condutiva leve", "melhora após remoção", "gap aéreo-ósseo uniforme"],
-        "red_flags": []
-      },
-      {
-        "nome": "Doença de Ménière",
-        "cid10": ["H81.0"],
-        "achados_chave": ["perda neurossensorial flutuante em graves", "hipoacusia unilateral", "audiometria variável entre exames"],
-        "red_flags": ["crises frequentes incapacitantes", "perda auditiva progressiva bilateral"]
+        "nome": "Otite Média Crônica Simples",
+        "cid10": [
+          "H66.1",
+          "H66.2",
+          "H66.3"
+        ],
+        "achados_chave": [
+          "Otorreia intermitente não fétida",
+          "hipoacusia condutiva",
+          "perfuração timpânica"
+        ],
+        "red_flags": [
+          "Otorreia fétida (suspeita de colesteatoma)",
+          "vertigem",
+          "paralisia facial"
+        ]
       },
       {
         "nome": "Colesteatoma",
-        "cid10": ["H71", "H71.0", "H71.9"],
-        "achados_chave": ["perda condutiva ou mista", "gap aéreo-ósseo progressivo", "hipoacusia com otorreia fétida"],
-        "red_flags": ["vertigem (erosão de canal semicircular)", "paralisia facial"]
+        "cid10": [
+          "H71",
+          "H71.0",
+          "H71.1",
+          "H71.9"
+        ],
+        "achados_chave": [
+          "Otorreia fétida crônica",
+          "hipoacusia progressiva",
+          "sensação de plenitude auricular"
+        ],
+        "red_flags": [
+          "Vertigem (erosão de canal semicircular)",
+          "paralisia facial",
+          "complicação intracraniana"
+        ]
       },
       {
-        "nome": "Otite Média Crônica",
-        "cid10": ["H66.1", "H66.2", "H66.3"],
-        "achados_chave": ["perda condutiva com perfuração timpânica", "gap aéreo-ósseo estável", "hipoacusia flutuante com otorreia"],
-        "red_flags": ["otorreia fétida (suspeita de colesteatoma)", "vertigem", "paralisia facial"]
+        "nome": "Otomicose",
+        "cid10": [
+          "H62.2",
+          "B37.8"
+        ],
+        "achados_chave": [
+          "Prurido intenso no conduto",
+          "otorreia esbranquiçada/escura",
+          "sensação de ouvido tampado"
+        ],
+        "red_flags": [
+          "Imunodeprimido",
+          "refratariedade ao tratamento"
+        ]
+      },
+      {
+        "nome": "Otite Média Secretora / Efusiva",
+        "cid10": [
+          "H65.0",
+          "H65.1",
+          "H65.2",
+          "H65.3",
+          "H65.9"
+        ],
+        "achados_chave": [
+          "Hipoacusia condutiva",
+          "plenitude auricular",
+          "autofonia"
+        ],
+        "red_flags": [
+          "Unilateral em adulto (excluir neoplasia de nasofaringe)",
+          "atraso de linguagem"
+        ]
+      },
+      {
+        "nome": "Cerume Impactado",
+        "cid10": [
+          "H61.2"
+        ],
+        "achados_chave": [
+          "Hipoacusia condutiva",
+          "plenitude auricular",
+          "zumbido"
+        ],
+        "red_flags": []
+      },
+      {
+        "nome": "Perfuração Timpânica",
+        "cid10": [
+          "H72.0",
+          "H72.1",
+          "H72.2",
+          "H72.9",
+          "S09.2"
+        ],
+        "achados_chave": [
+          "Otalgia súbita (alívio após perfuração)",
+          "otorreia",
+          "hipoacusia condutiva"
+        ],
+        "red_flags": [
+          "Vertigem pós-trauma (lesão de cadeia ossicular/labirinto)",
+          "surdez neurossensorial"
+        ]
+      },
+      {
+        "nome": "Otosclerose",
+        "cid10": [
+          "H80.0",
+          "H80.1",
+          "H80.2",
+          "H80.9"
+        ],
+        "achados_chave": [
+          "Hipoacusia condutiva bilateral progressiva",
+          "zumbido",
+          "paracusia de Willis (ouve melhor em ambiente ruidoso)"
+        ],
+        "red_flags": [
+          "Componente neurossensorial progressivo (otosclerose coclear)"
+        ]
+      },
+      {
+        "nome": "Presbiacusia",
+        "cid10": [
+          "H91.1"
+        ],
+        "achados_chave": [
+          "Hipoacusia bilateral progressiva em agudos",
+          "dificuldade de discriminação vocal (especialmente em ambiente ruidoso)",
+          "zumbido"
+        ],
+        "red_flags": [
+          "Assimetria significativa (excluir schwannoma vestibular)",
+          "perda súbita sobreposta"
+        ]
+      },
+      {
+        "nome": "Perda Auditiva Induzida por Ruído (PAIR)",
+        "cid10": [
+          "H83.3"
+        ],
+        "achados_chave": [
+          "Hipoacusia bilateral em agudos",
+          "zumbido",
+          "dificuldade de compreensão vocal em ruído"
+        ],
+        "red_flags": [
+          "Assimetria significativa",
+          "progressão após afastamento do ruído"
+        ]
+      },
+      {
+        "nome": "Surdez Súbita (SSNHL)",
+        "cid10": [
+          "H91.2"
+        ],
+        "achados_chave": [
+          "Perda auditiva unilateral súbita",
+          "zumbido",
+          "plenitude auricular"
+        ],
+        "red_flags": [
+          "EMERGÊNCIA OTOLÓGICA: tratamento em até 14 dias",
+          "excluir schwannoma vestibular com RM"
+        ]
+      },
+      {
+        "nome": "Doença de Ménière",
+        "cid10": [
+          "H81.0"
+        ],
+        "achados_chave": [
+          "Vertigem rotatória episódica (20min a 12h)",
+          "hipoacusia flutuante em graves",
+          "zumbido"
+        ],
+        "red_flags": [
+          "Crises frequentes incapacitantes",
+          "perda auditiva progressiva bilateral",
+          "drop attacks (crise otolítica de Tumarkin)"
+        ]
+      },
+      {
+        "nome": "Vertigem Posicional Paroxística Benigna (VPPB)",
+        "cid10": [
+          "H81.1"
+        ],
+        "achados_chave": [
+          "Vertigem breve (<60s) posicional",
+          "nistagmo posicional",
+          "náuseas"
+        ],
+        "red_flags": [
+          "Nistagmo vertical down-beating (causa central)",
+          "déficit neurológico focal"
+        ]
+      },
+      {
+        "nome": "Neurite Vestibular",
+        "cid10": [
+          "H81.2"
+        ],
+        "achados_chave": [
+          "Vertigem intensa prolongada (dias)",
+          "náuseas/vômitos",
+          "desequilíbrio"
+        ],
+        "red_flags": [
+          "Perda auditiva associada (= labirintite)",
+          "sinais cerebelares (ataxia, dismetria)"
+        ]
+      },
+      {
+        "nome": "Labirintite",
+        "cid10": [
+          "H83.0"
+        ],
+        "achados_chave": [
+          "Vertigem intensa",
+          "hipoacusia neurossensorial",
+          "zumbido"
+        ],
+        "red_flags": [
+          "Labirintite bacteriana (complicação de OMC/meningite): emergência",
+          "sinais meníngeos"
+        ]
+      },
+      {
+        "nome": "Schwannoma Vestibular",
+        "cid10": [
+          "D33.3"
+        ],
+        "achados_chave": [
+          "Hipoacusia neurossensorial unilateral progressiva",
+          "zumbido unilateral",
+          "desequilíbrio"
+        ],
+        "red_flags": [
+          "Hipoacusia assimétrica inexplicada (indica RM)",
+          "paralisia facial",
+          "hidrocefalia (tumores grandes)"
+        ]
+      },
+      {
+        "nome": "Zumbido (Tinnitus)",
+        "cid10": [
+          "H93.1"
+        ],
+        "achados_chave": [
+          "Percepção de ruído (apito, chiado, pulsação)",
+          "perturbação do sono",
+          "dificuldade de concentração"
+        ],
+        "red_flags": [
+          "Unilateral pulsátil (descartar causa vascular/tumor)",
+          "assimetria auditiva (descartar schwannoma)"
+        ]
+      },
+      {
+        "nome": "Barotrauma de Orelha",
+        "cid10": [
+          "T70.0"
+        ],
+        "achados_chave": [
+          "Otalgia intensa",
+          "plenitude auricular",
+          "hipoacusia"
+        ],
+        "red_flags": [
+          "Vertigem persistente (fístula perilinfática)",
+          "surdez neurossensorial"
+        ]
+      },
+      {
+        "nome": "Otalgia Referida",
+        "cid10": [
+          "H92.0"
+        ],
+        "achados_chave": [
+          "Otalgia com exame otológico normal",
+          "dor à deglutição associada",
+          "dor em ATM"
+        ],
+        "red_flags": [
+          "Adulto fumante/etilista com otalgia unilateral sem causa otológica (descartar carcinoma de orofaringe/hipofaringe)"
+        ]
+      },
+      {
+        "nome": "Paralisia Facial Periférica (Bell)",
+        "cid10": [
+          "G51.0"
+        ],
+        "achados_chave": [
+          "Fraqueza/paralisia dos músculos faciais unilateral",
+          "incapacidade de fechar o olho",
+          "desvio da comissura labial"
+        ],
+        "red_flags": [
+          "Paralisia bilateral (descartar Guillain-Barré, sarcoidose, Lyme)",
+          "paralisia lenta progressiva (descartar neoplasia)",
+          "vesículas auriculares (Ramsay Hunt)"
+        ]
+      },
+      {
+        "nome": "Síndrome de Ramsay Hunt",
+        "cid10": [
+          "B02.2"
+        ],
+        "achados_chave": [
+          "Paralisia facial periférica aguda",
+          "vesículas na concha/conduto auditivo",
+          "otalgia intensa"
+        ],
+        "red_flags": [
+          "Paralisia facial completa (pior prognóstico que Bell)",
+          "vertigem persistente"
+        ]
       }
     ]
   },
   "bera": {
     "condicoes_orl": [
       {
-        "nome": "Surdez Súbita (SSNHL)",
-        "cid10": ["H91.2"],
-        "achados_chave": ["ondas ausentes ou com limiar elevado ipsilateral", "latências normais (exclui retrococlear)", "assimetria entre orelhas"],
-        "red_flags": ["EMERGÊNCIA OTOLÓGICA", "excluir schwannoma vestibular com RM"]
+        "nome": "Presbiacusia",
+        "cid10": [
+          "H91.1"
+        ],
+        "achados_chave": [
+          "Hipoacusia bilateral progressiva em agudos",
+          "dificuldade de discriminação vocal (especialmente em ambiente ruidoso)",
+          "zumbido"
+        ],
+        "red_flags": [
+          "Assimetria significativa (excluir schwannoma vestibular)",
+          "perda súbita sobreposta"
+        ]
       },
       {
-        "nome": "Presbiacusia",
-        "cid10": ["H91.1"],
-        "achados_chave": ["limiar eletrofisiológico elevado bilateral", "latências absolutas normais", "morfologia de ondas preservada"],
-        "red_flags": ["assimetria significativa entre orelhas"]
+        "nome": "Surdez Súbita (SSNHL)",
+        "cid10": [
+          "H91.2"
+        ],
+        "achados_chave": [
+          "Perda auditiva unilateral súbita",
+          "zumbido",
+          "plenitude auricular"
+        ],
+        "red_flags": [
+          "EMERGÊNCIA OTOLÓGICA: tratamento em até 14 dias",
+          "excluir schwannoma vestibular com RM"
+        ]
       },
       {
         "nome": "Schwannoma Vestibular",
-        "cid10": ["D33.3"],
-        "achados_chave": ["aumento de latência da onda V ipsilateral", "IPL I-V prolongado (>4.4 ms)", "assimetria de latências interaurais"],
-        "red_flags": ["hipoacusia assimétrica inexplicada", "paralisia facial", "hidrocefalia"]
+        "cid10": [
+          "D33.3"
+        ],
+        "achados_chave": [
+          "Hipoacusia neurossensorial unilateral progressiva",
+          "zumbido unilateral",
+          "desequilíbrio"
+        ],
+        "red_flags": [
+          "Hipoacusia assimétrica inexplicada (indica RM)",
+          "paralisia facial",
+          "hidrocefalia (tumores grandes)"
+        ]
       }
     ]
   },
   "videolaringoscopia": {
     "condicoes_orl": [
       {
-        "nome": "Nódulo Vocal",
-        "cid10": ["J38.2"],
-        "achados_chave": ["lesão bilateral simétrica em terço médio de prega vocal", "fenda fusiforme", "superfície lisa"],
-        "red_flags": ["lesão unilateral ou assimétrica (pode não ser nódulo)"]
+        "nome": "Faringite Viral",
+        "cid10": [
+          "J02.9",
+          "J06.9"
+        ],
+        "achados_chave": [
+          "Odinofagia",
+          "hiperemia faríngea",
+          "coriza"
+        ],
+        "red_flags": [
+          "Disfagia intensa com sialorreia (abscesso)",
+          "estridor/dispneia",
+          "trismo"
+        ]
       },
       {
-        "nome": "Pólipo de Prega Vocal",
-        "cid10": ["J38.1"],
-        "achados_chave": ["lesão unilateral séssil ou pediculada", "localização em borda livre da prega vocal", "superfície lisa translúcida ou hemorrágica"],
-        "red_flags": ["lesão irregular ou atípica (biopsiar para excluir neoplasia)"]
+        "nome": "Faringite Estreptocócica (GAS)",
+        "cid10": [
+          "J02.0",
+          "J03.0"
+        ],
+        "achados_chave": [
+          "Odinofagia intensa de início súbito",
+          "febre alta (>38.5°C)",
+          "exsudato amigdaliano"
+        ],
+        "red_flags": [
+          "Abscesso periamigdaliano",
+          "febre reumática (artrite migratória, cardite)"
+        ]
       },
       {
-        "nome": "Edema de Reinke",
-        "cid10": ["J38.4"],
-        "achados_chave": ["edema bilateral fusiforme do espaço de Reinke", "aspecto gelatinoso", "pregas vocais edemaciadas com mobilidade preservada"],
-        "red_flags": ["obstrução de via aérea em casos volumosos"]
+        "nome": "Abscesso Periamigdaliano",
+        "cid10": [
+          "J36"
+        ],
+        "achados_chave": [
+          "Odinofagia intensa unilateral",
+          "trismo",
+          "voz abafada ('batata quente')"
+        ],
+        "red_flags": [
+          "Extensão para espaço parafaríngeo",
+          "comprometimento de via aérea",
+          "sepse"
+        ]
       },
       {
-        "nome": "Paralisia de Prega Vocal",
-        "cid10": ["J38.0"],
-        "achados_chave": ["imobilidade de prega vocal uni ou bilateral", "fenda glótica", "atrofia de prega vocal paralisada"],
-        "red_flags": ["bilateral: risco de obstrução de via aérea", "sem causa iatrogênica: excluir neoplasia pulmonar/mediastinal"]
+        "nome": "Abscesso Retrofaríngeo",
+        "cid10": [
+          "J39.0"
+        ],
+        "achados_chave": [
+          "Febre alta",
+          "odinofagia",
+          "disfagia"
+        ],
+        "red_flags": [
+          "Estridor/dispneia (comprometimento de via aérea)",
+          "mediastinite descendente",
+          "sepse"
+        ]
       },
       {
-        "nome": "Laringite Aguda",
-        "cid10": ["J04.0"],
-        "achados_chave": ["hiperemia difusa de pregas vocais", "edema de pregas vocais", "secreção endolaríngea"],
-        "red_flags": ["estridor (obstrução de via aérea)", "rouquidão >3 semanas"]
+        "nome": "Mononucleose Infecciosa",
+        "cid10": [
+          "B27.0",
+          "B27.9"
+        ],
+        "achados_chave": [
+          "Faringoamigdalite exsudativa bilateral",
+          "linfadenopatia cervical difusa",
+          "febre prolongada"
+        ],
+        "red_flags": [
+          "Obstrução de via aérea (hipertrofia amigdaliana maciça)",
+          "ruptura esplênica",
+          "complicações hematológicas"
+        ]
+      },
+      {
+        "nome": "Herpangina",
+        "cid10": [
+          "B08.5"
+        ],
+        "achados_chave": [
+          "Febre alta de início súbito",
+          "odinofagia",
+          "vesículas/úlceras em palato mole e pilares"
+        ],
+        "red_flags": [
+          "Desidratação (recusa alimentar)"
+        ]
+      },
+      {
+        "nome": "Síndrome PFAPA",
+        "cid10": [
+          "D89.8"
+        ],
+        "achados_chave": [
+          "Febre periódica alta (>39°C) com intervalo regular",
+          "faringite/amigdalite",
+          "estomatite aftosa"
+        ],
+        "red_flags": [
+          "Diagnóstico diferencial com febre reumática e doenças autoinflamatórias hereditárias"
+        ]
       },
       {
         "nome": "Refluxo Laringofaríngeo (RLF)",
-        "cid10": ["K21.0", "K21.9"],
-        "achados_chave": ["edema e hiperemia de aritenoides", "paquidermia interaritenoidea", "edema subglótico"],
-        "red_flags": ["disfagia progressiva (excluir neoplasia)"]
+        "cid10": [
+          "K21.0",
+          "K21.9"
+        ],
+        "achados_chave": [
+          "Pigarro crônico",
+          "globo faríngeo",
+          "tosse crônica"
+        ],
+        "red_flags": [
+          "Disfagia progressiva (excluir neoplasia)",
+          "perda de peso",
+          "odinofagia persistente"
+        ]
+      },
+      {
+        "nome": "Disfagia",
+        "cid10": [
+          "R13.1",
+          "R13.0"
+        ],
+        "achados_chave": [
+          "Dificuldade de iniciar a deglutição",
+          "engasgos",
+          "tosse durante alimentação"
+        ],
+        "red_flags": [
+          "Disfagia progressiva (neoplasia)",
+          "perda de peso não intencional",
+          "odinofagia associada",
+          "pneumonias aspirativas recorrentes"
+        ]
+      },
+      {
+        "nome": "Laringite Aguda",
+        "cid10": [
+          "J04.0"
+        ],
+        "achados_chave": [
+          "Rouquidão",
+          "desconforto laríngeo",
+          "tosse seca"
+        ],
+        "red_flags": [
+          "Estridor (obstrução de via aérea)",
+          "rouquidão >3 semanas (avaliar laringoscopia)"
+        ]
+      },
+      {
+        "nome": "Nódulo Vocal",
+        "cid10": [
+          "J38.2"
+        ],
+        "achados_chave": [
+          "Rouquidão crônica",
+          "fadiga vocal",
+          "voz soprosa"
+        ],
+        "red_flags": [
+          "Lesão unilateral ou assimétrica (pode não ser nódulo)"
+        ]
+      },
+      {
+        "nome": "Pólipo de Prega Vocal",
+        "cid10": [
+          "J38.1"
+        ],
+        "achados_chave": [
+          "Rouquidão persistente",
+          "voz soprosa ou bitonal",
+          "fadiga vocal"
+        ],
+        "red_flags": [
+          "Lesão irregular ou atípica (biopsiar para excluir neoplasia)"
+        ]
+      },
+      {
+        "nome": "Edema de Reinke",
+        "cid10": [
+          "J38.4"
+        ],
+        "achados_chave": [
+          "Rouquidão crônica com voz grave",
+          "esforço vocal",
+          "dispneia (casos graves)"
+        ],
+        "red_flags": [
+          "Obstrução de via aérea em casos volumosos"
+        ]
+      },
+      {
+        "nome": "Paralisia de Prega Vocal",
+        "cid10": [
+          "J38.0"
+        ],
+        "achados_chave": [
+          "Rouquidão/voz soprosa (unilateral)",
+          "dispneia/estridor (bilateral)",
+          "aspiração com tosse ao comer/beber"
+        ],
+        "red_flags": [
+          "Bilateral: risco de obstrução de via aérea",
+          "paralisia sem causa iatrogênica (excluir neoplasia de ápice pulmonar, mediastino, base de crânio)"
+        ]
+      },
+      {
+        "nome": "Papilomatose Laríngea Recorrente",
+        "cid10": [
+          "D14.1"
+        ],
+        "achados_chave": [
+          "Rouquidão progressiva",
+          "estridor (crianças)",
+          "dispneia"
+        ],
+        "red_flags": [
+          "Obstrução de via aérea (pediátrica)",
+          "transformação maligna (rara, HPV 11)"
+        ]
+      },
+      {
+        "nome": "Estenose Subglótica / Traqueal",
+        "cid10": [
+          "J38.6",
+          "J95.5",
+          "Q31.1"
+        ],
+        "achados_chave": [
+          "Dispneia progressiva",
+          "estridor bifásico",
+          "intolerância ao exercício"
+        ],
+        "red_flags": [
+          "Estridor em repouso (obstrução >50%)",
+          "falha de extubação repetida"
+        ]
+      },
+      {
+        "nome": "Laringomalácia",
+        "cid10": [
+          "Q31.5"
+        ],
+        "achados_chave": [
+          "Estridor inspiratório (piora com alimentação, choro, agitação, decúbito dorsal)",
+          "dificuldade alimentar",
+          "regurgitação"
+        ],
+        "red_flags": [
+          "Apneia",
+          "falha de ganho ponderal",
+          "cianose",
+          "tiragem supraesternal grave"
+        ]
+      },
+      {
+        "nome": "Epiglotite Aguda",
+        "cid10": [
+          "J05.1"
+        ],
+        "achados_chave": [
+          "Odinofagia intensa de início rápido",
+          "sialorreia",
+          "voz abafada"
+        ],
+        "red_flags": [
+          "EMERGÊNCIA: obstrução de via aérea iminente",
+          "não manipular via aérea fora de ambiente controlado"
+        ]
+      },
+      {
+        "nome": "Crupe (Laringotraqueobronquite)",
+        "cid10": [
+          "J05.0"
+        ],
+        "achados_chave": [
+          "Tosse ladrante (barking cough)",
+          "estridor inspiratório",
+          "rouquidão"
+        ],
+        "red_flags": [
+          "Estridor em repouso",
+          "tiragem",
+          "cianose",
+          "agitação intensa"
+        ]
       },
       {
         "nome": "Carcinoma de Laringe",
-        "cid10": ["C32.0", "C32.1", "C32.2", "C32.9"],
-        "achados_chave": ["lesão vegetante/ulcerada em prega vocal", "leucoplasia com irregularidade", "imobilidade de prega vocal com massa"],
-        "red_flags": ["rouquidão >3 semanas em fumante/etilista = laringoscopia obrigatória", "massa cervical"]
+        "cid10": [
+          "C32.0",
+          "C32.1",
+          "C32.2",
+          "C32.3",
+          "C32.8",
+          "C32.9"
+        ],
+        "achados_chave": [
+          "Rouquidão persistente (>3 semanas)",
+          "odinofagia",
+          "disfagia"
+        ],
+        "red_flags": [
+          "Rouquidão >3 semanas em fumante/etilista = laringoscopia obrigatória",
+          "massa cervical",
+          "estridor"
+        ]
+      },
+      {
+        "nome": "Pneumonia Aspirativa",
+        "cid10": [
+          "J69.0"
+        ],
+        "achados_chave": [
+          "Febre",
+          "tosse produtiva",
+          "dispneia"
+        ],
+        "red_flags": [
+          "Pneumonias de repetição (avaliar disfagia e aspiração crônica)"
+        ]
       }
     ]
   },
@@ -180,61 +1055,327 @@
     "condicoes_orl": [
       {
         "nome": "Rinite Alérgica",
-        "cid10": ["J30.1", "J30.2", "J30.3", "J30.4"],
-        "achados_chave": ["mucosa pálida edemaciada", "cornetos hipertrofiados", "secreção aquosa hialina"],
+        "cid10": [
+          "J30.1",
+          "J30.2",
+          "J30.3",
+          "J30.4"
+        ],
+        "achados_chave": [
+          "Obstrução nasal",
+          "rinorreia aquosa",
+          "espirros em salva"
+        ],
         "red_flags": []
+      },
+      {
+        "nome": "Rinite Vasomotora",
+        "cid10": [
+          "J30.0"
+        ],
+        "achados_chave": [
+          "Obstrução nasal alternante",
+          "rinorreia aquosa",
+          "gotejamento pós-nasal"
+        ],
+        "red_flags": []
+      },
+      {
+        "nome": "Rinite Medicamentosa",
+        "cid10": [
+          "J30.8"
+        ],
+        "achados_chave": [
+          "Obstrução nasal progressiva",
+          "dependência de descongestionante",
+          "congestão de rebote"
+        ],
+        "red_flags": []
+      },
+      {
+        "nome": "IVAS / Resfriado Comum",
+        "cid10": [
+          "J00",
+          "J06.9"
+        ],
+        "achados_chave": [
+          "Congestão nasal",
+          "rinorreia",
+          "espirros"
+        ],
+        "red_flags": [
+          "Febre >38.5°C por >3 dias",
+          "sintomas >10 dias sem melhora",
+          "piora após melhora inicial"
+        ]
+      },
+      {
+        "nome": "Gripe (Influenza)",
+        "cid10": [
+          "J10.1",
+          "J11.1"
+        ],
+        "achados_chave": [
+          "Febre alta",
+          "calafrios",
+          "mialgia"
+        ],
+        "red_flags": [
+          "Dispneia",
+          "dor torácica",
+          "confusão mental",
+          "vômitos persistentes"
+        ]
+      },
+      {
+        "nome": "Rinossinusite Aguda Bacteriana",
+        "cid10": [
+          "J01.0",
+          "J01.1",
+          "J01.2",
+          "J01.3",
+          "J01.4",
+          "J01.8",
+          "J01.9"
+        ],
+        "achados_chave": [
+          "Rinorreia purulenta",
+          "obstrução nasal",
+          "dor/pressão facial"
+        ],
+        "red_flags": [
+          "Cefaleia intensa",
+          "edema periorbital",
+          "alterações visuais",
+          "sinais meníngeos"
+        ]
+      },
+      {
+        "nome": "Rinossinusite Crônica",
+        "cid10": [
+          "J32.0",
+          "J32.1",
+          "J32.2",
+          "J32.3",
+          "J32.4",
+          "J32.8",
+          "J32.9"
+        ],
+        "achados_chave": [
+          "Obstrução nasal crônica",
+          "rinorreia anterior/posterior",
+          "dor/pressão facial"
+        ],
+        "red_flags": [
+          "Sintomas unilaterais",
+          "epistaxe recorrente unilateral",
+          "déficit de nervo craniano"
+        ]
       },
       {
         "nome": "Polipose Nasal",
-        "cid10": ["J33.0", "J33.1", "J33.8", "J33.9"],
-        "achados_chave": ["massas translúcidas pediculadas em meato médio", "pólipos bilaterais", "obstrução de drenagem sinusal"],
-        "red_flags": ["pólipo unilateral (excluir papiloma invertido/neoplasia)", "epistaxe"]
+        "cid10": [
+          "J33.0",
+          "J33.1",
+          "J33.8",
+          "J33.9"
+        ],
+        "achados_chave": [
+          "Obstrução nasal progressiva bilateral",
+          "anosmia/hiposmia",
+          "rinorreia"
+        ],
+        "red_flags": [
+          "Pólipo unilateral (excluir papiloma invertido/neoplasia)",
+          "epistaxe",
+          "proptose"
+        ]
       },
       {
         "nome": "Desvio de Septo Nasal",
-        "cid10": ["J34.2"],
-        "achados_chave": ["desvio septal com contato mucoso", "esporão septal", "obstrução de fossa nasal ipsilateral"],
+        "cid10": [
+          "J34.2"
+        ],
+        "achados_chave": [
+          "Obstrução nasal unilateral predominante",
+          "respiração oral",
+          "ronco"
+        ],
         "red_flags": []
       },
       {
-        "nome": "Hipertrofia de Adenoides",
-        "cid10": ["J35.2", "J35.3"],
-        "achados_chave": ["tecido adenoideano obstruindo coanas", "graus III-IV de obstrução coanal", "secreção purulenta sobre adenoide"],
-        "red_flags": ["apneia obstrutiva do sono"]
+        "nome": "Epistaxe",
+        "cid10": [
+          "R04.0"
+        ],
+        "achados_chave": [
+          "Sangramento ativo por uma ou ambas narinas",
+          "sangue na orofaringe (posterior)",
+          "náuseas por sangue deglutido"
+        ],
+        "red_flags": [
+          "Epistaxe posterior volumosa",
+          "uso de anticoagulantes",
+          "coagulopatia",
+          "recorrência frequente unilateral"
+        ]
       },
       {
         "nome": "Corpo Estranho Nasal",
-        "cid10": ["T17.1"],
-        "achados_chave": ["objeto visível em fossa nasal", "secreção purulenta fétida unilateral", "tecido de granulação perilesional"],
-        "red_flags": ["pilha-botão (risco de necrose septal)", "corpo estranho posterior com risco de aspiração"]
+        "cid10": [
+          "T17.1"
+        ],
+        "achados_chave": [
+          "Obstrução nasal unilateral",
+          "rinorreia purulenta fétida unilateral",
+          "epistaxe"
+        ],
+        "red_flags": [
+          "Pilha-botão (risco de necrose septal)",
+          "corpo estranho posterior com risco de aspiração"
+        ]
+      },
+      {
+        "nome": "Hipertrofia de Adenoides",
+        "cid10": [
+          "J35.2",
+          "J35.3"
+        ],
+        "achados_chave": [
+          "Obstrução nasal crônica",
+          "respiração oral",
+          "ronco"
+        ],
+        "red_flags": [
+          "Apneia obstrutiva do sono",
+          "cor pulmonale"
+        ]
+      },
+      {
+        "nome": "Fístula Liquórica Nasal",
+        "cid10": [
+          "G96.0"
+        ],
+        "achados_chave": [
+          "Rinorreia aquosa clara unilateral",
+          "gotejamento postural",
+          "cefaleia ortostática"
+        ],
+        "red_flags": [
+          "Meningite recorrente",
+          "pós-trauma craniano",
+          "pós-cirurgia endoscópica"
+        ]
       },
       {
         "nome": "Tumor Nasossinusal",
-        "cid10": ["C30.0", "C31.0", "D14.0"],
-        "achados_chave": ["massa unilateral em fossa nasal", "superfície irregular vascularizada", "sangramento ao toque"],
-        "red_flags": ["sintomas unilaterais progressivos", "epistaxe recorrente", "paralisia de nervo craniano"]
+        "cid10": [
+          "C30.0",
+          "C31.0",
+          "C31.1",
+          "C31.2",
+          "C31.3",
+          "D14.0"
+        ],
+        "achados_chave": [
+          "Obstrução nasal unilateral progressiva",
+          "epistaxe unilateral recorrente",
+          "dor facial"
+        ],
+        "red_flags": [
+          "Sintomas unilaterais progressivos",
+          "epistaxe recorrente",
+          "paralisia de nervo craniano",
+          "proptose"
+        ]
       },
       {
-        "nome": "Rinossinusite Aguda",
-        "cid10": ["J01.0", "J01.9"],
-        "achados_chave": ["secreção purulenta em meato médio", "edema de mucosa do meato médio", "hiperemia de cornetos"],
-        "red_flags": ["cefaleia intensa", "edema periorbital"]
+        "nome": "Atresia Coanal",
+        "cid10": [
+          "Q30.0"
+        ],
+        "achados_chave": [
+          "Cianose cíclica no neonato (piora ao mamar, melhora ao chorar)",
+          "obstrução nasal unilateral (se unilateral)",
+          "impossibilidade de passar sonda nasal"
+        ],
+        "red_flags": [
+          "Bilateral em neonato: emergência respiratória",
+          "associação CHARGE"
+        ]
+      },
+      {
+        "nome": "Mucocele Sinusal",
+        "cid10": [
+          "J34.1"
+        ],
+        "achados_chave": [
+          "Dor/pressão facial progressiva",
+          "proptose (se etmoidal/frontal)",
+          "diplopia"
+        ],
+        "red_flags": [
+          "Proptose",
+          "diplopia",
+          "sinais de infecção intracraniana"
+        ]
+      },
+      {
+        "nome": "Rinossinusite Fúngica",
+        "cid10": [
+          "B49",
+          "J32.9",
+          "B46.0"
+        ],
+        "achados_chave": [
+          "Obstrução nasal crônica",
+          "rinorreia espessa",
+          "dor facial"
+        ],
+        "red_flags": [
+          "Imunodeprimido com sintomas nasais",
+          "necrose de mucosa",
+          "proptose",
+          "paralisia de nervo craniano"
+        ]
       }
     ]
   },
   "polissonografia": {
     "condicoes_orl": [
       {
-        "nome": "Síndrome da Apneia Obstrutiva do Sono (SAOS)",
-        "cid10": ["G47.33"],
-        "achados_chave": ["IAH ≥5 eventos/hora", "dessaturação recorrente", "fragmentação do sono por eventos respiratórios"],
-        "red_flags": ["IAH >30 (grave)", "dessaturação <80%", "hipertensão refratária", "arritmias noturnas"]
+        "nome": "Ronco Primário",
+        "cid10": [
+          "R06.5"
+        ],
+        "achados_chave": [
+          "Ronco habitual",
+          "sem sonolência diurna excessiva",
+          "sem apneias testemunhadas"
+        ],
+        "red_flags": [
+          "Sonolência diurna excessiva (SAOS)",
+          "apneias presenciadas",
+          "hipertensão refratária"
+        ]
       },
       {
-        "nome": "Ronco Primário",
-        "cid10": ["R06.5"],
-        "achados_chave": ["ronco registrado sem apneias", "IAH <5", "arquitetura do sono preservada"],
-        "red_flags": ["sonolência diurna excessiva (SAOS)", "apneias presenciadas"]
+        "nome": "Síndrome da Apneia Obstrutiva do Sono (SAOS)",
+        "cid10": [
+          "G47.33"
+        ],
+        "achados_chave": [
+          "Ronco alto",
+          "apneias presenciadas",
+          "sonolência diurna excessiva"
+        ],
+        "red_flags": [
+          "IAH >30 (grave)",
+          "dessaturação <80%",
+          "hipertensão refratária",
+          "arritmias noturnas",
+          "sonolência ao volante"
+        ]
       }
     ]
   }

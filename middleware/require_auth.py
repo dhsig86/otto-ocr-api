@@ -5,9 +5,14 @@ Firebase Auth dependency para FastAPI.
 Protege endpoints de análise clínica contra acesso não autenticado.
 Endpoints públicos (polling de resultado, stats) permanecem abertos.
 
+Auth dupla:
+  1. X-Internal-Key header — chamadas server-to-server (triagem → OCR)
+  2. Authorization: Bearer — Firebase ID token (médicos autenticados)
+
 Env vars:
   FIREBASE_CREDENTIALS_JSON  — JSON completo da service account (prioridade, Render/Heroku)
   GOOGLE_APPLICATION_CREDENTIALS — caminho para arquivo .json (local)
+  INTERNAL_API_KEY — chave secreta para chamadas server-to-server
 """
 
 import os
@@ -33,11 +38,24 @@ if not firebase_admin._apps:
             print("[OCR-AUTH] AVISO: credenciais Firebase nao encontradas. Endpoints protegidos retornarao 503.")
 
 
-async def verify_firebase_token(authorization: str = Header(default=None)) -> str:
+async def verify_firebase_token(
+    authorization: str = Header(default=None),
+    x_internal_key: str = Header(default=None),
+) -> str:
     """
-    FastAPI Dependency — valida Bearer token Firebase e retorna uid do medico.
-    Retorna 401 se token ausente/invalido, 503 se Firebase nao inicializado.
+    FastAPI Dependency — valida Bearer token Firebase OU chave interna server-to-server.
+    Prioridade: X-Internal-Key (server-to-server) > Authorization Bearer (Firebase).
+    Retorna uid do médico ou 'internal-triage-server' para chamadas internas.
     """
+    # 1. Bypass por chave interna (server-to-server: triagem → OCR)
+    internal_key = os.environ.get("INTERNAL_API_KEY")
+    if internal_key and x_internal_key:
+        if x_internal_key == internal_key:
+            return "internal-triage-server"
+        else:
+            raise HTTPException(status_code=401, detail="Chave interna inválida.")
+
+    # 2. Firebase Auth (médicos autenticados)
     if not firebase_admin._apps:
         raise HTTPException(
             status_code=503,
@@ -58,3 +76,4 @@ async def verify_firebase_token(authorization: str = Header(default=None)) -> st
         raise HTTPException(status_code=401, detail="Token Firebase invalido.")
     except Exception as e:
         raise HTTPException(status_code=401, detail=f"Falha na autenticacao: {str(e)}")
+

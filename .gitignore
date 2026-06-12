@@ -1,4 +1,30 @@
+# Python
 venv/
 __pycache__/
 *.pyc
+*.pyo
 .env
+
+# SQLite databases (exceto seed)
+*.db
+*.db-journal
+!seed/*.db
+
+# Debris e outputs de teste
+*.stackdump
+*.zip
+logs.txt
+test_out.txt
+test_res.txt
+resultados_ocr.json
+
+# Uploads (LGPD — dados de paciente)
+uploads/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

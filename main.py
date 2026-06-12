@@ -6,8 +6,8 @@ from pydantic import BaseModel
 import uuid
 from pathlib import Path
 
+
 from middleware.require_auth import verify_firebase_token
-from pathlib import Path
 
 # ADMIN_TOKEN: env var obrigatória para /ocr/db/export
 # Se não configurada, a rota retorna 503 (em vez de gerar random que muda a cada restart)
@@ -73,6 +73,10 @@ app.add_middleware(
         "https://bottok-orcin.vercel.app",
         "https://test-pg-bice.vercel.app",
         "https://otto-ocr-web.vercel.app",
+        "https://ottoprocod.vercel.app",
+        "https://otto-procod.vercel.app",
+        "https://otto-log.vercel.app",
+        "https://otto-protto.vercel.app",
         # ── Firebase Hosting ──────────────────────────────────────────────
         "https://otto-ecosystem.web.app",
         "https://otto-ecosystem.firebaseapp.com",
@@ -83,6 +87,13 @@ app.add_middleware(
         # ── Desenvolvimento local ─────────────────────────────────────────
         "http://localhost:3000",
         "http://localhost:5173",
+        "http://localhost:5174",
+        "http://localhost:5175",
+        "http://localhost:5176",
+        "http://localhost:5177",
+        "http://localhost:5178",
+        "http://localhost:5179",
+        "http://localhost:5180",
         "http://localhost:8000",
         "http://127.0.0.1:3000",
         "http://127.0.0.1:5173",
@@ -122,7 +133,7 @@ async def serve_frontend():
 @app.api_route("/ping", methods=["GET", "HEAD"], include_in_schema=False)
 async def ping():
     files = {str(p.relative_to(BASE_DIR)): p.exists() for p in _HTML_CANDIDATES}
-    return {"version": "3.0.0", "base_dir": str(BASE_DIR), "files": files}
+    return {"version": "3.1.0", "base_dir": str(BASE_DIR), "files": files}
 
 # ─── Serviços ───────────────────────────────────────────────────────────────
 extractor = PdfExtractor()
