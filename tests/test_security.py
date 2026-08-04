@@ -27,10 +27,13 @@ def test_generate_patient_token():
     assert len(token_empty) > 6
 
 def test_extract_patient_data():
-    header = "Paciente: Joao da Silva\nNascimento: 15/03/1990"
+    header = "Paciente: Joao da Silva\nNascimento: 15/03/1990\nIdade: 54 anos\nSexo: Masculino\nCargo: Serralheiro"
     data = extract_patient_data(header)
     assert data["nome"] == "Joao da Silva"
     assert data["data_nascimento"] == "1990-03-15"
+    assert data["idade"] == "54 anos"
+    assert data["sexo"] == "Masculino"
+    assert data["cargo_funcao"] == "Serralheiro"
 
 def test_extract_and_strip_header():
     raw_text = (

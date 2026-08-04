@@ -572,6 +572,14 @@
       <span id="r-engine" class="engine-badge">—</span>
     </div>
     <div class="result-body">
+      <div class="result-section" id="sec-audiometria-hypotheses" style="display:none;">
+        <h3 style="color:var(--teal-dark);">🎧 Hipóteses Audiológicas & Demográficos (Treinamento Lexical)</h3>
+        <div style="background:var(--bg); border:1px solid var(--teal-light); border-radius:var(--r-sm); padding:1rem; display:flex; flex-direction:column; gap:0.75rem;">
+          <div id="audio-demo-block" style="font-size:0.85rem; color:var(--text); border-bottom:1px dashed var(--border); padding-bottom:0.5rem;"></div>
+          <div id="audio-entities-block" style="font-size:0.85rem; color:var(--text); line-height:1.5;"></div>
+        </div>
+      </div>
+
       <div class="result-section">
         <h3>📋 Sumário Clínico</h3>
         <p id="r-summary" class="summary-text">—</p>
@@ -840,6 +848,39 @@
       r.was_raster_engine_used ? '📡 Tesseract OCR' : '📄 PDF Parser';
     document.getElementById('r-summary').textContent =
       ci.summary || 'Aguardando parecer do modelo de sumarização.';
+
+    // Painel de Hipóteses Audiológicas & Demográficos (PROCOD / Prontuário)
+    const hypoSec = document.getElementById('sec-audiometria-hypotheses');
+    const demoBlock = document.getElementById('audio-demo-block');
+    const entBlock = document.getElementById('audio-entities-block');
+
+    const pd = r.patient_data || {};
+    const ent = r.entities_found || {};
+
+    let demoHtml = '<strong>Demográficos (Modo PROCOD / Prontuário):</strong> ';
+    const demoItems = [];
+    if (pd.nome) demoItems.push(`<span>Nome: <b>${pd.nome}</b></span>`);
+    if (pd.idade) demoItems.push(`<span>Idade: <b>${pd.idade}</b></span>`);
+    if (pd.sexo) demoItems.push(`<span>Sexo: <b>${pd.sexo}</b></span>`);
+    if (pd.cargo_funcao) demoItems.push(`<span>Cargo/Função: <b>${pd.cargo_funcao}</b></span>`);
+    demoHtml += demoItems.length ? demoItems.join(' | ') : '<i>Anonimizado / Não detectado no cabeçalho</i>';
+    demoBlock.innerHTML = demoHtml;
+
+    let entHtml = '<strong>Hipóteses Audiológicas Extraídas:</strong><br>';
+    const entItems = [];
+    if (ent.tipo_perda) entItems.push(`• <b>Tipo de Perda:</b> ${ent.tipo_perda.toUpperCase()}`);
+    if (ent.lateralidade) entItems.push(`• <b>Lateralidade:</b> ${ent.lateralidade.toUpperCase()}`);
+    if (ent.grau_perda) entItems.push(`• <b>Grau da Perda:</b> ${ent.grau_perda.toUpperCase()}`);
+    if (ent.srt_db !== undefined && ent.srt_db !== null) entItems.push(`• <b>SRT / LRF:</b> ${ent.srt_db} dB`);
+    if (ent.iprf_pct !== undefined && ent.iprf_pct !== null) entItems.push(`• <b>IPRF / SDT:</b> ${ent.iprf_pct}%`);
+    if (ent.sugestoes_complementares?.length) entItems.push(`• <b>Sugestões Complementares:</b> ${ent.sugestoes_complementares.join(', ')}`);
+
+    if (entItems.length > 0 || r.exam_type === 'audiometria') {
+      hypoSec.style.display = 'block';
+      entBlock.innerHTML = entItems.length ? entItems.join('<br>') : '• <i>Hipóteses clínicas populadas via motor de IA e base lexical.</i>';
+    } else {
+      hypoSec.style.display = 'none';
+    }
 
     const findingsEl = document.getElementById('r-findings');
     findingsEl.innerHTML = '';

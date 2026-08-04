@@ -519,5 +519,93 @@
         "significado": "Movimentos repetitivos nas pernas durante o sono. Pode ou não causar despertares associados."
       }
     ]
+  },
+  "audiometria": {
+    "achados_discriminativos": [
+      {
+        "termo": "perda auditiva condutiva",
+        "variantes": ["hipoacusia condutiva", "componente condutivo", "gap aéreo-ósseo", "gap aéreo ósseo"],
+        "peso": "ALTO",
+        "significado": "Limiares de via óssea normais com via aérea rebaixada (Gap > 10dB). Indica alteração em orelha externa ou média (ex: otite, otosclerose, disjunção ossicular)."
+      },
+      {
+        "termo": "perda auditiva neurossensorial",
+        "variantes": ["perda auditiva sensorioneural", "hipoacusia neurossensorial", "hipoacusia sensorioneural", "rebaixamento sensorioneural"],
+        "peso": "ALTO",
+        "significado": "Limiares de via aérea e via óssea rebaixados juntos sem Gap significativo (<= 10dB). Indica lesão coclear ou retrococlear."
+      },
+      {
+        "termo": "perda auditiva mista",
+        "variantes": ["hipoacusia mista", "componente misto", "perda mista"],
+        "peso": "ALTO",
+        "significado": "Limiares de via óssea rebaixados associados a Gap aéreo-ósseo (> 10dB). Indica acometimento simultâneo de orelha média e coclea."
+      },
+      {
+        "termo": "normoacusia",
+        "variantes": ["audição normal", "limiares normais", "limiares auditivos dentro dos padrões da normalidade", "sem alteração audiométrica"],
+        "peso": "ALTO",
+        "significado": "Limiares tonais em todas as frequências <= 25 dB HL."
+      },
+      {
+        "termo": "grau leve",
+        "variantes": ["perda leve", "grau leve a moderado", "hipoacusia leve"],
+        "peso": "MÉDIO",
+        "significado": "Média dos limiares entre 26 e 40 dB HL."
+      },
+      {
+        "termo": "grau moderado",
+        "variantes": ["perda moderada", "grau moderado a severo", "hipoacusia moderada"],
+        "peso": "MÉDIO",
+        "significado": "Média dos limiares entre 41 e 55 dB HL (ou 56-70 dB em grau moderadamente severo)."
+      },
+      {
+        "termo": "grau severo",
+        "variantes": ["grau grave", "perda severa", "perda grave", "hipoacusia severa"],
+        "peso": "MÉDIO",
+        "significado": "Média dos limiares entre 71 e 90 dB HL."
+      },
+      {
+        "termo": "grau profundo",
+        "variantes": ["perda profunda", "anacusia", "hipoacusia profunda"],
+        "peso": "MÉDIO",
+        "significado": "Média dos limiares > 90 dB HL."
+      },
+      {
+        "termo": "entalhe em 4khz",
+        "variantes": ["entalhe acústico", "drop em 4000hz", "entalhe em 3000hz", "entalhe em 6000hz", "gota acústica"],
+        "peso": "ALTO",
+        "significado": "Rebaixamento localizado em 3k-6kHz com recuperação em 8kHz — marca registrada da Perda Auditiva Induzida por Ruído (PAIR) / Trauma Acústico."
+      },
+      {
+        "termo": "entalhe de carhart",
+        "variantes": ["entalhe em 2000hz na via óssea", "carhart notch"],
+        "peso": "ALTO",
+        "significado": "Rebaixamento aparente da via óssea em 2kHz por redução da ressonância ossicular — clássico da Otosclerose."
+      },
+      {
+        "termo": "curva descendente em agudos",
+        "variantes": ["queda em altas frequências", "rebaixamento descendente", "presbiacusia"],
+        "peso": "MÉDIO",
+        "significado": "Presbiacusia ou ototoxicidade atingindo frequências de 4k a 8kHz."
+      },
+      {
+        "termo": "sugestoes complementares",
+        "variantes": ["sugiro bera", "sugiro peate", "sugiro immitanciometria", "sugiro timpanometria", "sugiro avaliação otoneurológica"],
+        "peso": "MÉDIO",
+        "significado": "Recomendações complementares de exames otoneurológicos ou eletrofisiológicos expressas pelo fonoaudiólogo/médico no parecer."
+      }
+    ],
+    "diagnosticos_compostos": [
+      {
+        "condicao": "entalhe_4khz + exposicao_ruido",
+        "diagnostico": "Perda Auditiva Induzida por Ruído (PAIR) / Trauma Acústico",
+        "justificativa": "Entalhe clássico nas frequências agudas (3-6kHz) associado a histórico de ruído ocupacional ou recreativo."
+      },
+      {
+        "condicao": "gap_aereo_osseo + entalhe_carhart",
+        "diagnostico": "Suspeita de Otosclerose (Otospongiose)",
+        "justificativa": "Perda condutiva ou mista com fixação estapediana e entalhe de Carhart em 2kHz."
+      }
+    ]
   }
 }

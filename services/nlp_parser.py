@@ -3,22 +3,46 @@ import re
 class NLPParser:
     def parse_audiometria(self, text: str) -> dict:
         """
-        Extrai dados audiométricos: limiares (dB), SRT, IPRF, tipo de perda.
+        Extrai dados audiométricos: limiares (dB), SRT, IPRF, tipo de perda, lateralidade, grau, sugestões.
         """
         db_values = re.findall(r'(\d{1,3})\s?(?:dB|db|Db)', text)
+        text_lower = text.lower()
         
         # Extrair tipo de perda
         loss_type = None
-        text_lower = text.lower()
         if re.search(r'perda\s+(auditiva\s+)?mista|hipoacusia\s+mista', text_lower):
             loss_type = "mista"
         elif re.search(r'perda\s+(auditiva\s+)?condutiva|hipoacusia\s+condutiva', text_lower):
             loss_type = "condutiva"
         elif re.search(r'perda\s+(auditiva\s+)?(?:sensorioneural|neurossensorial|sensório-neural)', text_lower):
             loss_type = "neurossensorial"
-        elif re.search(r'audi[çc][ãa]o\s+normal|limiares\s+normais', text_lower):
+        elif re.search(r'audi[çc][ãa]o\s+normal|limiares\s+normais|normoacusia', text_lower):
             loss_type = "normal"
         
+        # Extrair lateralidade
+        lateralidade = None
+        if re.search(r'bilateral|bilateralmente|ambas\s+as\s+orelhas|\bao\b', text_lower):
+            lateralidade = "bilateral"
+        elif re.search(r'orelha\s+direita|\bod\b|à\s+direita', text_lower):
+            lateralidade = "direita"
+        elif re.search(r'orelha\s+esquerda|\boe\b|à\s+esquerda', text_lower):
+            lateralidade = "esquerda"
+        
+        # Extrair grau de perda
+        grau_perda = None
+        if re.search(r'grau\s+profundo|perda\s+profunda|anacusia', text_lower):
+            grau_perda = "profundo"
+        elif re.search(r'grau\s+(severo|grave)|perda\s+(severa|grave)', text_lower):
+            grau_perda = "severo"
+        elif re.search(r'grau\s+moderado\s+a\s+(severo|grave)|moderadamente\s+severa', text_lower):
+            grau_perda = "moderado a severo"
+        elif re.search(r'grau\s+moderado|perda\s+moderada', text_lower):
+            grau_perda = "moderado"
+        elif re.search(r'grau\s+leve\s+a\s+moderado', text_lower):
+            grau_perda = "leve a moderado"
+        elif re.search(r'grau\s+leve|perda\s+leve', text_lower):
+            grau_perda = "leve"
+
         # Extrair SRT
         srt = None
         srt_match = re.search(r'SRT[:\s]+(\d{1,3})\s?dB', text, re.IGNORECASE)
@@ -31,13 +55,28 @@ class NLPParser:
         if iprf_match:
             iprf = int(iprf_match.group(1))
         
+        # Extrair sugestões complementares
+        sugestoes = []
+        if re.search(r'bera|peate', text_lower):
+            sugestoes.append("BERA/PEATE")
+        if re.search(r'immitanciometria|timpanometria', text_lower):
+            sugestoes.append("Immitanciometria/Timpanometria")
+        if re.search(r'otoneurol[oó]gic[ao]', text_lower):
+            sugestoes.append("Avaliação Otoneurológica")
+
         result = {"decibeis_encontrados": db_values}
         if loss_type:
             result["tipo_perda"] = loss_type
+        if lateralidade:
+            result["lateralidade"] = lateralidade
+        if grau_perda:
+            result["grau_perda"] = grau_perda
         if srt is not None:
             result["srt_db"] = srt
         if iprf is not None:
             result["iprf_pct"] = iprf
+        if sugestoes:
+            result["sugestoes_complementares"] = sugestoes
         return result
 
     def parse_bera(self, text: str) -> dict:

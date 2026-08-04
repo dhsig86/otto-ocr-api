@@ -69,9 +69,18 @@ def extract_patient_data(header_raw: str) -> dict:
     """
     nome = ""
     data_nascimento = ""
+    idade = ""
+    sexo = ""
+    cargo_funcao = ""
 
     if not header_raw:
-        return {"nome": nome, "data_nascimento": data_nascimento}
+        return {
+            "nome": nome,
+            "data_nascimento": data_nascimento,
+            "idade": idade,
+            "sexo": sexo,
+            "cargo_funcao": cargo_funcao
+        }
 
     # Nome: "Paciente: João da Silva" ou "Nome: Maria dos Santos"
     m_nome = re.search(
@@ -92,7 +101,35 @@ def extract_patient_data(header_raw: str) -> dict:
     if m_dn:
         data_nascimento = _normalize_date(m_dn.group(1))
 
-    return {"nome": nome, "data_nascimento": data_nascimento}
+    # Idade: "Idade: 54" ou "Idade: 54 anos"
+    m_idade = re.search(r'(?i)\bidade[:\s]+(\d{1,3})\s*(?:anos|a)?\b', header_raw)
+    if m_idade:
+        idade = f"{m_idade.group(1)} anos"
+
+    # Sexo: "Sexo: Masculino", "Sexo: F"
+    m_sexo = re.search(r'(?i)\b(?:sexo|gênero)[:\s]+(masculino|feminino|\bm\b|\bf\b)', header_raw)
+    if m_sexo:
+        val = m_sexo.group(1).lower()
+        if val in ['m', 'masculino']:
+            sexo = "Masculino"
+        elif val in ['f', 'feminino']:
+            sexo = "Feminino"
+
+    # Cargo / Função / Ocupação (Ocupacional)
+    m_cargo = re.search(
+        r'(?i)(?:cargo|fun[çc][ãa]o|profiss[ãa]o|ocupa[çc][ãa]o)[:\s]+([A-Za-zÀ-ÖØ-öø-ÿ \/]+?)(?=\s{3,}|\t|data:|idade:|sexo:|\n|$|\r)',
+        header_raw
+    )
+    if m_cargo:
+        cargo_funcao = m_cargo.group(1).strip()
+
+    return {
+        "nome": nome,
+        "data_nascimento": data_nascimento,
+        "idade": idade,
+        "sexo": sexo,
+        "cargo_funcao": cargo_funcao
+    }
 
 def extract_and_strip_header(raw_text: str) -> tuple[str, str]:
     """
