@@ -75,6 +75,7 @@ app.add_middleware(
         "https://otto-ocr-web.vercel.app",
         "https://ottoprocod.vercel.app",
         "https://otto-procod.vercel.app",
+        "https://ottoprocod-g7ud.vercel.app",   # produção atual do PROCOD (Vercel)
         "https://otto-log.vercel.app",
         "https://otto-protto.vercel.app",
         # ── Firebase Hosting ──────────────────────────────────────────────
@@ -99,6 +100,9 @@ app.add_middleware(
         "http://127.0.0.1:5173",
         "http://127.0.0.1:8000",
     ],
+    # Previews da Vercel do PROCOD têm subdomínio dinâmico (ottoprocod-g7ud-git-<branch>-...).
+    # Regex escopado ao projeto g7ud cobre produção + todos os previews SEM abrir para *.vercel.app.
+    allow_origin_regex=r"^https://ottoprocod-g7ud[a-z0-9-]*\.vercel\.app$",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
